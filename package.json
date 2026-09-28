@@ -1,0 +1,14 @@
+{
+  "name": "nielcody",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "npm run dev -w nielcody-site",
+    "build": "npm run build -w nielcody-site",
+    "test": "npm test -w council-core"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "sharp": true
+  }
+}
