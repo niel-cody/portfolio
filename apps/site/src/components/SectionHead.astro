@@ -1,0 +1,15 @@
+---
+interface Props {
+  n: string;
+  title: string;
+  aside?: string;
+  id?: string;
+}
+const { n, title, aside, id } = Astro.props;
+---
+
+<div class="sect-head" id={id}>
+  <p class="n label label-ink">{n}</p>
+  <h2 class="t label label-ink">{title}</h2>
+  {aside && <p class="a label">{aside}</p>}
+</div>

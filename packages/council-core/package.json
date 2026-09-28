@@ -1,0 +1,35 @@
+{
+  "name": "council-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The Council: independent member answers, a chair, and a decision record.",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./pack": "./src/pack.ts",
+    "./verdict": "./src/verdict.ts",
+    "./record": "./src/record.ts",
+    "./schema": "./src/schema.ts"
+  },
+  "bin": {
+    "council": "./src/cli.ts"
+  },
+  "scripts": {
+    "council": "tsx src/cli.ts",
+    "eval": "tsx src/eval.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}

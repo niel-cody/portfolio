@@ -1,0 +1,173 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { site } from '../data/site';
+
+const palette = [
+  ['Paper', '#F1EFEA', 'var(--paper)', 'The ground. Warm, never pure white'],
+  ['Ink', '#141414', 'var(--ink)', 'Text, rules and every control'],
+  ['Braun grey', '#6A6964', 'var(--grey)', 'Secondary text. 4.8:1 on paper'],
+  ['Switch orange', '#FF5B14', 'var(--orange)', 'Home. The Braun switch'],
+  ['Cobalt', '#2340FF', 'var(--cobalt)', 'Work, and Readout'],
+  ['Acid', '#C9F23A', 'var(--acid)', 'Playground, and the Council'],
+  ['Bubblegum', '#FF7EC7', 'var(--bubblegum)', 'Writing, and Reprice'],
+  ['Butter', '#FFD23F', 'var(--butter)', 'About'],
+];
+const principles = [
+  ['Every section is a device', 'Panels, switches and readouts, like a Braun or Teenage Engineering object. The Council runs on a mixing desk, not a chat box.'],
+  ['Each project has an era', 'Every playground gets its own colour and sticker. The grid and the type never change.'],
+  ['Things are collectable', 'Each playground has a card. Flip it for the spec.'],
+  ['One loud moment per page', 'One flash of colour, one sticker. Everything else stays quiet.'],
+  ['Honest status', 'A small label on everything: shipped, in flight, draft, fixture data.'],
+];
+const stack = [
+  ['Framework', 'Astro, static HTML by default, with React islands only where something moves'],
+  ['Type', 'Archivo, variable width from 62% to 125%, and DM Mono. Self-hosted'],
+  ['Motion', 'CSS only. Native view transitions between pages. Reduced motion respected everywhere'],
+  ['Council', 'A small TypeScript package: Claude Haiku 4.5 members, a Claude Sonnet 5 chair, schema-validated packs, a sycophancy eval'],
+  ['Content', 'Markdown, written in my notes and published into the repo'],
+  ['Tracking', 'None. No cookies, no analytics scripts'],
+  ['Made with', 'Claude in the loop, for code and critique. Every word and number checked by me'],
+];
+---
+
+<Base title="Colophon" description="How nielcody.com is designed and built: the system, the type, the palette and the stack." flash="orange" section="colophon">
+  <section class="wrap intro">
+    <p class="label label-ink">Colophon</p>
+    <h1 class="display display-xxl">How this is made</h1>
+    <div class="grid sub">
+      <p class="lede">
+        A Braun calculator that has just had its comeback. The discipline, grid and honesty come from Dieter Rams and Jony
+        Ive. The energy, colour and collectability come from K-pop. The bridge is Teenage Engineering and Nothing.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="01" title="Five principles" aside="Minimalist, but" />
+    <ol class="list">
+      {
+        principles.map(([t, d], i) => (
+          <li>
+            <span class="num n">{i + 1}</span>
+            <span class="t display display-s">{t}</span>
+            <span class="d">{d}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="02" title="Palette" aside="Paper, ink, and one flash per page" />
+    <div class="swatches">
+      {
+        palette.map(([name, hex, v, use]) => (
+          <div class="sw">
+            <span class="chip" style={`background:${v}`} />
+            <span class="sw-n">{name}</span>
+            <span class="label label-ink">{hex}</span>
+            <span class="sw-u">{use}</span>
+          </div>
+        ))
+      }
+    </div>
+    <p class="label rules">Eras are fills with ink on top, never text on paper. Cobalt is the one exception. No gradients, no purple, no glass.</p>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="03" title="Type" aside="One family, one mono" />
+    <div class="type">
+      <p class="specimen">Aa</p>
+      <div class="widths">
+        {[62, 80, 100, 112, 125].map((w) => <p style={`font-stretch:${w}%`}>Friday night <span class="label">{w}%</span></p>)}
+      </div>
+      <p class="mono-spec">DM MONO — THE TEXT PRINTED UNDER A SWITCH. 0123456789</p>
+    </div>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="04" title="Stack" aside="Fast, mostly static" />
+    <dl class="stack">
+      {
+        stack.map(([k, v]) => (
+          <div>
+            <dt class="label label-ink">{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="src">
+      <a class="go" href={site.repo} rel="noopener" target="_blank">Read the source <span class="arrow" aria-hidden="true">→</span></a>
+    </p>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="05" title="References" aside="Where the ideas came from" />
+    <ul class="refs">
+      <li>Dieter Rams, ten principles for good design</li>
+      <li>Jony Ive, on the parts you never see</li>
+      <li>NewJeans and the logo that changes every release</li>
+      <li>Teenage Engineering and Nothing, the bridge</li>
+      <li>karpathy.ai, deliberately plain</li>
+      <li>Simon Willison, for the colophon habit</li>
+      <li>rauno.me, for the craft bar</li>
+    </ul>
+    <p class="stamp label">Made by Pixie Dust Industries — the name I put on my own work.</p>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-top: clamp(28px, 4vw, 48px); }
+  .intro h1 { margin-top: clamp(20px, 3vw, 40px); max-width: 10ch; }
+  .sub { margin-top: 28px; }
+  .sub .lede { grid-column: 1 / span 7; max-width: 50ch; }
+  @media (max-width: 900px) { .sub .lede { grid-column: 1 / -1; } }
+  .block { padding-top: clamp(72px, 10vw, 140px); }
+
+  .list { list-style: none; padding: 0; }
+  .list li { display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+  .n { font-size: 44px; }
+  .d { font-size: 16px; line-height: 1.5; }
+  @media (max-width: 860px) { .list li { grid-template-columns: 56px 1fr; } .d { grid-column: 2; } }
+
+  .swatches { margin-top: 28px; display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--ink); }
+  .sw { display: grid; gap: 6px; padding: 16px; align-content: start; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .sw:nth-child(4n) { border-right: 0; }
+  .sw:nth-last-child(-n + 4) { border-bottom: 0; }
+  .chip { height: 96px; border: 1px solid var(--ink); margin-bottom: 8px; }
+  .sw-n { font-weight: 700; font-size: 16px; }
+  .sw-u { font-size: 13.5px; color: var(--grey); line-height: 1.4; }
+  @media (max-width: 800px) {
+    .swatches { grid-template-columns: 1fr 1fr; }
+    .sw:nth-child(n) { border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+    .sw:nth-child(2n) { border-right: 0; }
+    .sw:nth-last-child(-n + 2) { border-bottom: 0; }
+  }
+  .rules { margin-top: 14px; }
+
+  .type { margin-top: 28px; display: grid; grid-template-columns: auto 1fr; gap: 12px 48px; align-items: center; }
+  .specimen { font-stretch: 125%; font-weight: 900; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.8; letter-spacing: -0.06em; }
+  .widths { display: grid; gap: 4px; }
+  .widths p { font-weight: 820; font-size: clamp(1.6rem, 3.4vw, 2.8rem); letter-spacing: -0.03em; line-height: 1.05; display: flex; align-items: baseline; gap: 14px; }
+  .mono-spec { grid-column: 1 / -1; font-family: var(--mono); font-size: 14px; letter-spacing: 0.08em; padding-top: 18px; border-top: 1px solid var(--rule); }
+  @media (max-width: 800px) { .type { grid-template-columns: 1fr; } }
+
+  .stack { margin-top: 12px; }
+  .stack div { display: grid; grid-template-columns: 160px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .stack dd { font-size: 16px; line-height: 1.5; }
+  .src { margin-top: 24px; }
+
+  .refs { list-style: none; padding: 0; margin-top: 20px; columns: 2; column-gap: 28px; }
+  .refs li { padding: 10px 0; border-bottom: 1px solid var(--rule); break-inside: avoid; }
+  @media (max-width: 700px) { .refs { columns: 1; } }
+  .stamp {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 10px 14px;
+    border: 1px dashed var(--ink);
+    rotate: -2deg;
+    color: var(--ink);
+  }
+</style>

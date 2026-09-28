@@ -1,0 +1,107 @@
+---
+import { site } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="close">
+      <p class="label">End of service</p>
+      <p class="display display-xl sign">
+        First round's<br />on me.
+      </p>
+      <div class="cta">
+        <a class="key is-ink" href={site.linkedin} rel="me noopener" target="_blank">
+          Message me on LinkedIn <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="key" href="/cv/">Read the CV <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <div class="grid cols">
+      <div class="col">
+        <p class="label">Index</p>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/playground/">Playground</a></li>
+          <li><a href="/writing/">Writing</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <p class="label">Elsewhere</p>
+        <ul>
+          <li><a href={site.linkedin} rel="me noopener" target="_blank">LinkedIn ↗</a></li>
+          <li><a href={site.github} rel="me noopener" target="_blank">GitHub ↗</a></li>
+          <li><a href="/rss.xml">RSS</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <p class="label">This site</p>
+        <ul>
+          <li><a href="/colophon/">Colophon</a></li>
+          <li><a href="/playground/council/">The Council</a></li>
+          <li><a href={site.repo} rel="noopener" target="_blank">Source ↗</a></li>
+        </ul>
+      </div>
+      <div class="col note">
+        <p class="label">Set in Archivo and DM Mono. Built in Astro, with Claude in the loop. Press <kbd>G</kbd> for the grid.</p>
+      </div>
+    </div>
+
+    <div class="base label">
+      <span>© {year} Niel Cody</span>
+      <span>Australia</span>
+      <span>Last shipped {site.lastShipped}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: clamp(96px, 14vw, 200px);
+    border-top: 1px solid var(--ink);
+    padding-block: clamp(40px, 6vw, 72px) 28px;
+  }
+  .close {
+    display: grid;
+    gap: 22px;
+    padding-bottom: clamp(48px, 7vw, 96px);
+  }
+  .sign { max-width: 12ch; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+  .cols {
+    padding-block: 28px;
+    border-top: 1px solid var(--rule);
+    row-gap: 28px;
+  }
+  .col { grid-column: span 3; }
+  .col ul { list-style: none; padding: 0; margin-top: 12px; display: grid; gap: 6px; }
+  .col a { text-decoration: none; font-size: 15px; }
+  .col a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .note .label { max-width: 34ch; }
+  kbd {
+    display: inline-grid;
+    place-items: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border: 1px solid var(--ink);
+    border-bottom-width: 2px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink);
+  }
+  .base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  @media (max-width: 860px) {
+    .col { grid-column: span 6; }
+  }
+</style>

@@ -1,0 +1,125 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+  return work.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, index: i, next: work[(i + 1) % work.length], total: work.length },
+  }));
+}
+
+const { entry, index, next, total } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const n = String(index + 1).padStart(2, '0');
+---
+
+<Base title={d.title} description={d.summary} flash="cobalt" section="work" image={`/cards/work-${entry.id}.png`}>
+  <article>
+    <header class="wrap head">
+      <nav class="crumbs label" aria-label="Breadcrumb">
+        <a href="/work/">Work</a>
+        <span aria-hidden="true">/</span>
+        <span>Record {n} of {String(total).padStart(2, '0')}</span>
+      </nav>
+      <p class="label label-ink kicker">{d.kicker}</p>
+      <h1 class="display display-xl">{d.title}</h1>
+      <p class="lede summary">{d.summary}</p>
+    </header>
+
+    <div class="wrap grid body">
+      <aside class="sheet" aria-label="Record summary">
+        <div class="headline flash">
+          <span class="num">{d.headline.value}</span>
+          <span class="label hl">{d.headline.label}</span>
+        </div>
+        <dl class="panel spec">
+          <div><dt class="label">Period</dt><dd>{d.period}</dd></div>
+          <div><dt class="label">Seat</dt><dd>{d.seat}</dd></div>
+          <div><dt class="label">Team</dt><dd>{d.team}</dd></div>
+          {
+            d.spec.map(([k, v]) => (
+              <div>
+                <dt class="label">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))
+          }
+          <div class="st">
+            <dt class="label">Status</dt>
+            <dd>
+              <span class="pill">
+                <span class="dot" aria-hidden="true" />
+                {d.status}
+              </span>
+            </dd>
+          </div>
+        </dl>
+      </aside>
+
+      <div class="prose content">
+        <Content />
+      </div>
+    </div>
+
+    <footer class="wrap next">
+      <a href={`/work/${next.id}/`} class="next-link">
+        <span class="label">Next record</span>
+        <span class="display display-l">{next.data.title}</span>
+        <span class="go">Read it <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .head { padding-top: clamp(28px, 4vw, 48px); display: grid; gap: 20px; }
+  .crumbs { display: flex; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+  .crumbs a { text-decoration: none; color: var(--ink); }
+  .crumbs a:hover { text-decoration: underline; }
+  .kicker { margin-top: clamp(16px, 3vw, 40px); }
+  .head h1 { max-width: 14ch; }
+  .summary { max-width: 52ch; }
+
+  .body { margin-top: clamp(48px, 7vw, 96px); row-gap: 48px; align-items: start; }
+  .sheet {
+    grid-column: 1 / span 4;
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+    display: grid;
+  }
+  .headline {
+    display: grid;
+    gap: 12px;
+    padding: 22px;
+    border: 1px solid var(--ink);
+    border-bottom: 0;
+  }
+  .headline .num { font-size: clamp(4rem, 7vw, 6.4rem); }
+  .hl { color: inherit; opacity: 0.85; }
+  .spec { display: grid; }
+  .spec > div { padding: 12px 18px; border-bottom: 1px solid var(--rule); display: grid; gap: 4px; }
+  .spec > div:last-child { border-bottom: 0; }
+  .spec dd { font-size: 14.5px; line-height: 1.4; }
+  .content { grid-column: 6 / span 7; }
+  .content :global(h2:first-child) { margin-top: 0; }
+  @media (max-width: 960px) {
+    .sheet { position: static; grid-column: 1 / -1; }
+    .content { grid-column: 1 / -1; }
+  }
+
+  .next { margin-top: clamp(80px, 10vw, 140px); }
+  .next-link {
+    display: grid;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ink);
+    text-decoration: none;
+    justify-items: start;
+  }
+  .next-link .display { max-width: 18ch; transition: color var(--fast) var(--ease); }
+  .next-link:hover .display { color: var(--cobalt); }
+  .next-link:hover .arrow { transform: translateX(4px); }
+</style>

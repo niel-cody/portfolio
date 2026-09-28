@@ -1,0 +1,169 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const method = ['Situation', 'Options', 'The bet', 'What happened', 'What I cannot claim'];
+---
+
+<Base
+  title="Work"
+  description="Case studies from twenty years in hospitality, written as decision records: the options, the bet, what happened, and what cannot be claimed."
+  flash="cobalt"
+  section="work"
+  image="/cards/work.png"
+>
+  <section class="wrap intro">
+    <p class="label label-ink">Index 01 — Work</p>
+    <h1 class="display display-xxl">Work</h1>
+    <div class="grid sub">
+      <p class="lede">
+        Not polished stories. Each one is written as a decision record: the situation, the options on the table, the bet,
+        what happened, and the numbers I will not claim.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="method flash">
+      <p class="label m-label">The shape of every record</p>
+      <ol>
+        {
+          method.map((m, i) => (
+            <li>
+              <span class="mn">{String(i + 1).padStart(2, '0')}</span>
+              <span class="mt">{m}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap list-block">
+    <SectionHead n="01—04" title="The records" aside="Day job. Numbers traced to source" />
+    <ol class="records">
+      {
+        work.map((w, i) => (
+          <li class="reveal">
+            <a class="rec" href={`/work/${w.id}/`}>
+              <div class="rec-top">
+                <span class="label label-ink">{String(i + 1).padStart(2, '0')}</span>
+                <span class="label">{w.data.kicker}</span>
+                <span class="pill">
+                  <span class="dot" aria-hidden="true" />
+                  {w.data.status}
+                </span>
+              </div>
+              <div class="rec-body grid">
+                <h2 class="display display-l t">{w.data.title}</h2>
+                <div class="n">
+                  <span class="num">{w.data.headline.value}</span>
+                  <span class="label">{w.data.headline.label}</span>
+                </div>
+                <p class="s">{w.data.summary}</p>
+                <p class="meta label">
+                  {w.data.period} · {w.data.seat}
+                </p>
+              </div>
+              <span class="go">
+                Read the record <span class="arrow" aria-hidden="true">→</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="wrap earlier">
+    <SectionHead n="Before" title="Earlier, on the floor" aside="2004 — 2015" />
+    <div class="grid e-grid">
+      <div class="e">
+        <p class="num">£3.5m</p>
+        <p class="label label-ink">Three venues, Head of Operations</p>
+        <p>Revenue up more than 10%, gross margin up 10%, labour cost down 12%. The job the Friday Night Test comes from.</p>
+      </div>
+      <div class="e">
+        <p class="num">60+</p>
+        <p class="label label-ink">Sites, one pub group</p>
+        <p>Negotiated and delivered a point-of-sale, stock and financial control rollout. The role where I crossed the table.</p>
+      </div>
+      <div class="e">
+        <p class="num">6 yrs</p>
+        <p class="label label-ink">My own consultancy</p>
+        <p>Independent UK operators, on the floor rather than in a boardroom. Client revenue up by as much as 25%.</p>
+      </div>
+    </div>
+    <a class="go more" href="/about/">The whole story <span class="arrow" aria-hidden="true">→</span></a>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-top: clamp(28px, 4vw, 48px); }
+  .intro h1 { margin-top: clamp(20px, 3vw, 40px); }
+  .sub { margin-top: 28px; }
+  .sub .lede { grid-column: 1 / span 7; max-width: 46ch; }
+  @media (max-width: 900px) { .sub .lede { grid-column: 1 / -1; } }
+
+  .method {
+    margin-top: clamp(48px, 7vw, 96px);
+    padding: clamp(22px, 3vw, 36px);
+    display: grid;
+    gap: 22px;
+  }
+  .m-label { color: inherit; opacity: 0.8; }
+  .method ol {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+  }
+  .method li {
+    display: grid;
+    gap: 8px;
+    padding: 16px 16px 4px 0;
+    border-top: 1px solid currentColor;
+  }
+  .method li + li { padding-left: 16px; border-left: 1px solid currentColor; }
+  .mn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; opacity: 0.8; }
+  .mt { font-stretch: 125%; font-weight: 820; font-size: clamp(1.1rem, 1.9vw, 1.7rem); letter-spacing: -0.03em; line-height: 1; }
+  @media (max-width: 860px) {
+    .method ol { grid-template-columns: 1fr; }
+    .method li + li { padding-left: 0; border-left: 0; }
+  }
+
+  .list-block { padding-top: clamp(72px, 10vw, 140px); }
+  .records { list-style: none; padding: 0; }
+  .rec {
+    display: grid;
+    gap: 20px;
+    padding: clamp(28px, 3.4vw, 44px) 0;
+    border-bottom: 1px solid var(--ink);
+    text-decoration: none;
+  }
+  .rec-top { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+  .rec-top .pill { margin-left: auto; }
+  .rec-body { row-gap: 20px; align-items: start; }
+  .t { grid-column: 1 / span 8; max-width: 16ch; transition: color var(--fast) var(--ease); }
+  .rec:hover .t { color: var(--cobalt); }
+  .n { grid-column: 10 / span 3; display: grid; gap: 8px; }
+  .n .num { font-size: clamp(3rem, 5vw, 4.6rem); }
+  .s { grid-column: 1 / span 7; font-size: 17px; line-height: 1.55; max-width: 60ch; }
+  .meta { grid-column: 10 / span 3; align-self: end; }
+  .rec .go { justify-self: start; }
+  .rec:hover .go .arrow { transform: translateX(4px); }
+  @media (max-width: 900px) {
+    .t, .n, .s, .meta { grid-column: 1 / -1; }
+  }
+
+  .earlier { padding-top: clamp(72px, 10vw, 140px); }
+  .e-grid { margin-top: 28px; row-gap: 32px; }
+  .e { grid-column: span 4; display: grid; gap: 10px; align-content: start; }
+  .e .num { font-size: clamp(3rem, 5vw, 4.4rem); }
+  .e p:last-child { font-size: 16px; line-height: 1.5; max-width: 34ch; }
+  .more { margin-top: 36px; }
+  @media (max-width: 900px) { .e { grid-column: 1 / -1; } }
+</style>

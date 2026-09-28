@@ -1,0 +1,118 @@
+id: qr-only-weekends
+title: QR-only ordering on weekend nights
+short: Replace table ordering with QR order-and-pay on Friday and Saturday nights.
+decision: >
+  A 180-cover suburban pub moves to QR order-and-pay only on Friday and
+  Saturday nights. Staff stop taking orders at tables. The plan is to cut two
+  floor staff per shift and put the saving back into the kitchen.
+recorded: 2026-09-28
+kind: illustrative
+
+takes:
+  mara:
+    stance: conditional
+    confidence: 64
+    headline: The labour saving is real. The bar queue is where it dies.
+    take: >
+      Two floor staff a shift is the biggest line I control, so I want this to
+      work. But QR does not remove the job, it moves it. Guests who cannot or will
+      not scan walk to the bar, and my bar becomes the ordering desk at the exact
+      moment it should be pouring. Keep one roaming staff member with a handheld
+      and the saving is still one and a half shifts.
+    breaks_at: 19:44 — the table of twelve all want to order together, on one phone, and give up.
+    would_need: A staffed fallback, and four weekends of spend-per-head against the same weekends last year.
+
+  tomas:
+    stance: fail
+    confidence: 58
+    headline: My regulars would read this as the pub not wanting to talk to them.
+    take: >
+      It is not my kind of venue, but I know my regulars and I know why they come.
+      It is the chat at the counter. Take the person out of the order and you take
+      out the reason a local picks you over the chain up the road. You save two
+      wages and slowly lose the Tuesday crowd, because they feel it on Friday.
+    breaks_at: 19:40 — a regular waves at a staff member to order and is pointed at a sticker.
+    would_need: Proof that locals come back as often, not just that the first night went fine.
+
+  priya:
+    stance: conditional
+    confidence: 70
+    headline: QR orders arrive in waves. My kitchen needs a pacing valve.
+    take: >
+      Table ordering has a natural rhythm. A person walks the section and the
+      dockets come in a trickle. QR removes the walker, so when a band finishes
+      or a game ends, forty phones order at once. Twenty dockets in two minutes
+      is how a kitchen falls over. I am for it only if the system can pace
+      orders, or at least quote an honest wait time back to the guest.
+    breaks_at: 19:41 — the printer jams while the first QR surge lands, and nobody on the floor knows.
+    would_need: Order throttling or live wait times, and the ticket-time data from a trial weekend.
+
+  keith:
+    stance: fail
+    confidence: 76
+    headline: The licence still needs a person to judge who is being served.
+    take: >
+      Taking orders is not only taking orders. It is how my staff see who has
+      had enough. With QR, a guest can order another round without anyone
+      looking at them until the drink arrives, and by then it is harder to
+      refuse. For older members, a phone-only menu also reads as a door being
+      shut. I would not run this on a club floor without changes.
+    breaks_at: 19:52 — an intoxicated guest orders a round of eight from a phone and nobody sees it until it is poured.
+    would_need: Every alcohol order checked by a person at delivery, and a clear non-phone way to order.
+
+  jess:
+    stance: conditional
+    confidence: 55
+    headline: Fine for the second round. It kills the upsell on the first.
+    take: >
+      My crowd would love it for repeat rounds: scan, tap, done, no waving at
+      the bar. But the first order is where my staff sell. The house cocktail,
+      the better gin, the snacks. A menu on a phone sells the cheapest thing on
+      it. Use QR for reorders and keep a person for the first hello.
+    breaks_at: 19:47 — the card terminal drops offline and every QR payment fails at once.
+    would_need: Average spend on first orders against reorders, split out.
+
+  sam:
+    stance: pass
+    confidence: 60
+    headline: The payback works on paper. Measure spend per head or it is a guess.
+    take: >
+      Two shifts saved across two nights, fifty-two weeks a year, pays for the
+      platform quickly. What worries me is the number nobody is watching.
+      If average spend per head drops even a few per cent, it can eat the whole
+      labour saving and nobody notices until the quarter closes. I will back it
+      as a trial with the measurement agreed before the first weekend.
+    breaks_at: The month-end close — the saving shows up on the labour line, the loss hides in revenue.
+    would_need: A four-weekend trial with spend per head, covers and labour reported side by side.
+
+chair:
+  summaries:
+    pass: >
+      The panel backs the trial, but only as a trial. The labour case is strong
+      and the finance case pays back quickly. Every supporter attached a
+      condition, and the conditions are the product: a staffed fallback, and
+      spend per head measured from the first weekend.
+    conditional: >
+      Worth trialling, not worth rolling out. The labour saving is real, but
+      QR moves work rather than removing it: to the bar, to the kitchen in
+      surges, and to whoever still has to judge who is being served. Run it
+      with a person kept on the floor, pacing on the kitchen, and spend per
+      head measured against last year.
+    fail: >
+      Not as specified. The panel's objections are not about taste. They are
+      about responsible service, kitchen surges and the regulars who keep a
+      local pub alive. The labour saving is real, but it is being bought with
+      costs nobody has measured. Redesign it as QR for reorders, with people
+      kept for the first order and every alcohol delivery.
+  kill_signals:
+    - Average spend per head falls by more than 5% against the same weekends last year, over four weekends. Stop and restore table ordering.
+    - Peak ticket times pass 25 minutes on two consecutive Fridays. Add pacing or stop.
+    - Any responsible service incident linked to a phone order. Stop alcohol ordering by QR immediately.
+  assumptions:
+    - That guests over sixty will order by phone rather than walk to the bar.
+    - That the labour saved stays saved, rather than being spent again on runners and a busier bar.
+    - That the kitchen can absorb order surges without pacing.
+  questions:
+    - The last time you changed how guests order, what happened to spend per head in the first month?
+    - Who on your floor decides that someone has had enough, and when do they see them?
+    - When forty orders land at once, what does your kitchen do today?

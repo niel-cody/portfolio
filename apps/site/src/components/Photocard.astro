@@ -1,0 +1,179 @@
+---
+// A collectable card, K-pop photocard style. Front: name, era, one line.
+// Flip it for the spec. Plain CSS, with a button so it works by touch and keyboard.
+import type { Flash } from '../layouts/Base.astro';
+
+interface Props {
+  title: string;
+  era: string;
+  eraColour?: Flash | 'ink';
+  line: string;
+  number: string;
+  status: string;
+  spec: [string, string][];
+  href: string;
+  cta?: string;
+  glyph?: string;
+  /** Front stays ink until hovered, so a page of cards keeps one flash. */
+  quiet?: boolean;
+}
+const { title, era, eraColour = 'ink', line, number, status, spec, href, cta = 'Open', glyph, quiet = false } = Astro.props;
+const mark = glyph ?? title.split(' ').map((w) => w[0]).join('');
+---
+
+<div class:list={['pc', { quiet }]} data-era={eraColour}>
+  <div class="inner">
+    <div class="face front">
+      <div class="top">
+        <span class="label label-ink">No. {number}</span>
+        <span class="pill"><span class="dot" aria-hidden="true"></span>{status}</span>
+      </div>
+      <div class="art" aria-hidden="true">
+        <span class="glyph">{mark}</span>
+      </div>
+      <div class="bottom">
+        <p class="era label">{era}</p>
+        <h3 class="name">{title}</h3>
+        <p class="line">{line}</p>
+      </div>
+    </div>
+    <div class="face back" aria-hidden="true">
+      <p class="label">Spec — No. {number}</p>
+      <dl>
+        {
+          spec.map(([k, v]) => (
+            <>
+              <dt class="label">{k}</dt>
+              <dd>{v}</dd>
+            </>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="flip key" type="button" aria-pressed="false">Flip <span aria-hidden="true">↻</span></button>
+    <a class="key is-ink" href={href}>{cta} <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.pc').forEach((card) => {
+    const btn = card.querySelector<HTMLButtonElement>('.flip');
+    const back = card.querySelector<HTMLElement>('.back');
+    btn?.addEventListener('click', () => {
+      const on = card.classList.toggle('is-flipped');
+      btn.setAttribute('aria-pressed', String(on));
+      back?.setAttribute('aria-hidden', String(!on));
+    });
+  });
+</script>
+
+<style>
+  .pc {
+    --era: var(--ink);
+    --on-era: var(--paper);
+    width: 100%;
+    max-width: 380px;
+    perspective: 1400px;
+  }
+  .pc[data-era='acid'] { --era: var(--acid); --on-era: var(--ink); }
+  .pc[data-era='cobalt'] { --era: var(--cobalt); --on-era: var(--paper); }
+  .pc[data-era='bubblegum'] { --era: var(--bubblegum); --on-era: var(--ink); }
+  .pc[data-era='orange'] { --era: var(--orange); --on-era: var(--ink); }
+  .pc[data-era='butter'] { --era: var(--butter); --on-era: var(--ink); }
+
+  .inner {
+    position: relative;
+    aspect-ratio: 5 / 7.6;
+    transform-style: preserve-3d;
+    transition: transform 620ms var(--spring);
+  }
+  .pc.is-flipped .inner { transform: rotateY(180deg); }
+  @media (hover: hover) {
+    .pc:hover .inner { transform: rotateY(-7deg) rotateX(3deg); }
+    .pc.is-flipped:hover .inner { transform: rotateY(187deg) rotateX(3deg); }
+  }
+  .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 1px solid var(--ink);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .front {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: var(--paper-lift);
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    background: var(--era);
+    color: var(--on-era);
+    overflow: hidden;
+  }
+  .art::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(currentColor 0.9px, transparent 1.1px);
+    background-size: 9px 9px;
+    opacity: 0.22;
+  }
+  .quiet .art { background: var(--ink); color: var(--paper); transition: background 300ms var(--ease), color 300ms var(--ease); }
+  .quiet:hover .art, .quiet:focus-within .art { background: var(--era); color: var(--on-era); }
+  .glyph {
+    position: relative;
+    font-stretch: 125%;
+    font-weight: 900;
+    font-size: clamp(88px, 11vw, 150px);
+    letter-spacing: -0.06em;
+    line-height: 0.8;
+  }
+  .bottom {
+    padding: 16px 16px 18px;
+    border-top: 1px solid var(--ink);
+    display: grid;
+    gap: 6px;
+  }
+  .name {
+    font-stretch: 125%;
+    font-weight: 860;
+    font-size: 30px;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+  }
+  .line { font-size: 14.5px; line-height: 1.4; color: var(--ink); }
+
+  .back {
+    transform: rotateY(180deg);
+    background: var(--era);
+    color: var(--on-era);
+    padding: 20px;
+    display: grid;
+    align-content: start;
+    gap: 16px;
+  }
+  .back .label { color: inherit; opacity: 0.75; }
+  dl { display: grid; gap: 4px; }
+  dt { margin-top: 10px; }
+  dd { font-size: 15px; line-height: 1.35; font-weight: 520; }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .controls .key { flex: 1; min-height: 42px; padding: 0 14px; }
+</style>

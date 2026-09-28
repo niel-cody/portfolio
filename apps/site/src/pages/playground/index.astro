@@ -1,0 +1,103 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import Photocard from '../../components/Photocard.astro';
+import { playgrounds } from '../../data/playgrounds';
+
+const rules = [
+  ['Made, shipped, explained', 'Every playground has the thing itself, how it works, the decisions behind it, and a guide to build your own.'],
+  ['Honest status', 'Each one says what it runs on: fixture data, recorded runs or live. Nothing pretends.'],
+  ['Mine, not my employer’s', 'Built on my own time with generic data. No personas, records or data from the day job.'],
+];
+---
+
+<Base
+  title="Playground"
+  description="Things Niel Cody builds on his own time, left up for anyone to use: the Council, Reprice and Readout."
+  flash="acid"
+  section="playground"
+  image="/cards/playground.png"
+>
+  <section class="wrap intro">
+    <p class="label label-ink">Index 02 — Playground</p>
+    <h1 class="display display-xxl">Playground</h1>
+    <div class="grid sub">
+      <p class="lede">
+        Things I build on my own time and leave up for anyone to use. Don't read about them. Play with them. Flip a card
+        for the spec.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap cards-block" aria-label="Playgrounds">
+    <div class="cards">
+      {
+        playgrounds.map((p, i) => (
+          <div class="card-slot reveal" data-delay={String(i)}>
+            <Photocard
+              title={p.title}
+              glyph={p.glyph}
+              era={p.era}
+              eraColour={p.colour}
+              line={p.line}
+              number={p.number}
+              status={p.status}
+              spec={p.spec}
+              href={`/playground/${p.slug}/`}
+              cta="Play"
+              quiet
+            />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="Rules" title="The house rules" aside="Karpathy style: it is what it is" />
+    <div class="grid rules">
+      {
+        rules.map(([t, d]) => (
+          <div class="rule-item">
+            <p class="display display-s">{t}</p>
+            <p>{d}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-top: clamp(28px, 4vw, 48px); }
+  .intro h1 { margin-top: clamp(20px, 3vw, 40px); }
+  .sub { margin-top: 28px; }
+  .sub .lede { grid-column: 1 / span 7; max-width: 46ch; }
+  @media (max-width: 900px) { .sub .lede { grid-column: 1 / -1; } }
+
+  .cards-block { margin-top: clamp(48px, 7vw, 96px); }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 44px);
+    padding: clamp(24px, 4vw, 56px);
+    border: 1px solid var(--ink);
+    background:
+      radial-gradient(rgb(20 20 20 / 0.16) 1px, transparent 1.2px) 0 0 / 16px 16px,
+      var(--paper-deep);
+  }
+  .card-slot { display: grid; justify-items: center; }
+  .card-slot:nth-child(2) { translate: 0 28px; }
+  .card-slot:nth-child(3) { translate: 0 -12px; }
+  @media (max-width: 1000px) {
+    .cards { grid-template-columns: 1fr 1fr; }
+    .card-slot:nth-child(n) { translate: none; }
+  }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+
+  .block { padding-top: clamp(72px, 10vw, 140px); }
+  .rules { margin-top: 28px; row-gap: 28px; }
+  .rule-item { grid-column: span 4; display: grid; gap: 12px; align-content: start; padding-top: 18px; border-top: 1px solid var(--ink); }
+  .rule-item p:last-child { font-size: 16px; line-height: 1.5; }
+  @media (max-width: 900px) { .rule-item { grid-column: 1 / -1; } }
+</style>

@@ -1,0 +1,12 @@
+---
+interface Props {
+  label: string;
+  live?: boolean;
+  ghost?: boolean;
+}
+const { label, live = false, ghost = false } = Astro.props;
+---
+
+<span class:list={['pill', { 'is-live': live, 'is-ghost': ghost }]}>
+  <span class="dot" aria-hidden="true"></span>{label}
+</span>

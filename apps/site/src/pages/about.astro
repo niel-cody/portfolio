@@ -1,0 +1,257 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { career } from '../data/career';
+
+const start = 2004;
+const end = 2026.9;
+const span = end - start;
+const phases = [
+  { label: 'On the floor', from: 2004, to: 2012, cls: 'floor' },
+  { label: 'Across the table', from: 2012, to: 2015, cls: 'across' },
+  { label: 'Building the product', from: 2015, to: end, cls: 'product' },
+];
+const ticks = [2004, 2008, 2012, 2016, 2020, 2024];
+
+const principles = [
+  ['Build for 8pm, not the demo', 'If it does not hold when the venue is full, it is not finished. Watch someone use it with one hand.'],
+  ['Write down the kill signal', 'Every decision gets a number, a date and an action that would prove it wrong. Most teams skip this. It is the whole job.'],
+  ['Autonomy follows reversibility', 'The easier an action is to undo, the more a system can do it alone. The harder, the longer a person stays in the loop.'],
+  ['Annotate, never delete', 'Superseded decisions get struck through, not erased. Six months on, the question is always why we changed our minds.'],
+  ['Honest status on everything', 'Shipped, in flight, draft. Say which. Claim only what can be traced, and say what cannot be claimed yet.'],
+];
+
+const built = [
+  ['QA, from zero', 'There was no QA when I arrived. I built it to two engineers onshore and a team in the Philippines, with the process and tooling for manual and automated testing.'],
+  ['A product owner bench', 'Six product owners recruited as engineering scaled. Four came in as interns in the first intake. One is still there.'],
+  ['The loyalty team', 'From a couple of engineers reporting to the CEO, to a tech lead reporting to me across front end, back end and QA, plus onboarding.'],
+];
+---
+
+<Base
+  title="About"
+  description="Eight years on the hospitality floor, three across the table, eleven building the product. The operator-to-product story of Niel Cody."
+  flash="butter"
+  section="about"
+  image="/cards/about.png"
+>
+  <section class="wrap intro">
+    <p class="label label-ink">Index 04 — About</p>
+    <h1 class="display display-xxl">Operator first.</h1>
+    <div class="grid story">
+      <div class="lede-col">
+        <p class="lede">
+          I did not start in product. I started behind a bar in 2004, and spent the next eight years on the hospitality
+          floor, from Michelin service to running operations across three venues.
+        </p>
+      </div>
+      <div class="prose story-prose">
+        <p>
+          That is where I learned the only product lesson that has never let me down: a good system makes an average
+          night reliable, and a bad one makes a good team look incompetent.
+        </p>
+        <p>
+          Then I crossed the table. I implemented point of sale across a 60-site pub group, ran my own consultancy for
+          independent operators for six years, and joined the software company whose system I had been rolling out.
+        </p>
+        <p>
+          Since then I have made that product work in five countries, built the functions it needed that did not exist,
+          rebuilt a loyalty platform into real SaaS, and taken an AI agent from a trade-show demo to production. Today I
+          lead five product areas across a group of six point-of-sale brands.
+        </p>
+        <p>
+          I still judge everything I build by one question. <strong>Will it actually work when the venue is full?</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The one loud moment: twenty-two years in one bar -->
+  <section class="wrap arc" aria-labelledby="arc">
+    <SectionHead n="01" title="Twenty-two years, one line" aside="2004 — now" id="arc" />
+    <div class="bar" role="img" aria-label="Career: 2004 to 2012 on the floor, 2012 to 2015 across the table, 2015 to now building the product.">
+      {
+        phases.map((p) => (
+          <div class:list={['seg', p.cls]} style={`flex:${p.to - p.from}`}>
+            <span class="seg-label">{p.label}</span>
+            <span class="seg-years label">
+              {p.from} — {p.cls === 'product' ? 'now' : p.to}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+    <div class="ticks" aria-hidden="true">
+      {ticks.map((t) => <span class="label" style={`left:${((t - start) / span) * 100}%`}>{t}</span>)}
+    </div>
+  </section>
+
+  <section class="wrap timeline-block" aria-labelledby="record">
+    <SectionHead n="02" title="The record" aside="Numbers only where they were measured" id="record" />
+    <ol class="timeline">
+      {
+        career.map((r) => (
+          <li class="reveal" data-phase={r.phase}>
+            <span class="yrs label label-ink">
+              {r.from} — {r.to}
+            </span>
+            <span class="who">
+              <span class="role">{r.role}</span>
+              <span class="org label">{r.org}</span>
+            </span>
+            <span class="what">{r.line}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="wrap principles-block" aria-labelledby="how">
+    <SectionHead n="03" title="How I work" aside="Five rules, all learned the hard way" id="how" />
+    <ol class="principles">
+      {
+        principles.map(([t, d], i) => (
+          <li class="reveal">
+            <span class="num pn">{i + 1}</span>
+            <span class="pt display display-s">{t}</span>
+            <span class="pd">{d}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="wrap built-block" aria-labelledby="built">
+    <SectionHead n="04" title="Teams I built" aside="Functions that did not exist" id="built" />
+    <div class="grid built">
+      {
+        built.map(([t, d]) => (
+          <div class="b reveal">
+            <p class="display display-s">{t}</p>
+            <p>{d}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="wrap cv-block" aria-labelledby="cv">
+    <SectionHead n="05" title="The CV" aside="One page, printable" id="cv" />
+    <div class="grid cv">
+      <p class="display display-l">The short version, on one page.</p>
+      <div class="cv-actions">
+        <a class="key is-ink" href="/cv/">Open the CV <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="key" href="https://www.linkedin.com/in/nielcody/" rel="me noopener" target="_blank">LinkedIn ↗</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-top: clamp(28px, 4vw, 48px); }
+  .intro h1 { margin-top: clamp(20px, 3vw, 40px); }
+  .story { margin-top: clamp(32px, 5vw, 64px); row-gap: 32px; }
+  .lede-col { grid-column: 1 / span 5; }
+  .story-prose { grid-column: 7 / span 6; }
+  @media (max-width: 900px) {
+    .lede-col, .story-prose { grid-column: 1 / -1; }
+  }
+
+  .arc { padding-top: clamp(72px, 10vw, 140px); }
+  .bar {
+    display: flex;
+    margin-top: 28px;
+    height: clamp(150px, 16vw, 220px);
+    border: 1px solid var(--ink);
+  }
+  .seg {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 14px 16px;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .seg + .seg { border-left: 1px solid var(--ink); }
+  .seg-label {
+    font-stretch: 125%;
+    font-weight: 860;
+    font-size: clamp(1rem, 2.2vw, 2rem);
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+  }
+  .floor { background: var(--ink); color: var(--paper); }
+  .floor .seg-years { color: rgb(241 239 234 / 0.7); }
+  .across {
+    background: repeating-linear-gradient(135deg, var(--ink) 0 1px, transparent 1px 8px) var(--paper-lift);
+  }
+  .across .seg-label, .across .seg-years { background: var(--paper-lift); align-self: start; padding-right: 6px; }
+  .product { background: var(--butter); }
+  .product .seg-years { color: var(--ink); }
+  .ticks { position: relative; height: 26px; margin-top: 8px; }
+  .ticks span { position: absolute; top: 0; translate: -1px 0; border-left: 1px solid var(--ink); padding-left: 6px; }
+  @media (max-width: 700px) {
+    .bar { flex-direction: column; height: auto; }
+    .seg { flex: none !important; min-height: 96px; }
+    .seg + .seg { border-left: 0; border-top: 1px solid var(--ink); }
+    .ticks { display: none; }
+  }
+
+  .timeline-block { padding-top: clamp(72px, 10vw, 140px); }
+  .timeline { list-style: none; padding: 0; }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 5fr) minmax(0, 6fr);
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .timeline li[data-phase='product'] .yrs::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    background: var(--butter);
+    outline: 1px solid var(--ink);
+  }
+  .who { display: grid; gap: 4px; }
+  .role { font-stretch: 112%; font-weight: 700; font-size: 19px; letter-spacing: -0.015em; line-height: 1.2; }
+  .what { font-size: 15.5px; line-height: 1.5; color: var(--ink); }
+  @media (max-width: 860px) {
+    .timeline li { grid-template-columns: 1fr; gap: 8px; }
+  }
+
+  .principles-block { padding-top: clamp(72px, 10vw, 140px); }
+  .principles { list-style: none; padding: 0; }
+  .principles li {
+    display: grid;
+    grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr);
+    gap: 24px;
+    align-items: baseline;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pn { font-size: 44px; }
+  .pd { font-size: 16.5px; line-height: 1.5; max-width: 52ch; }
+  @media (max-width: 860px) {
+    .principles li { grid-template-columns: 56px 1fr; }
+    .pd { grid-column: 2; }
+  }
+
+  .built-block { padding-top: clamp(72px, 10vw, 140px); }
+  .built { margin-top: 28px; row-gap: 28px; }
+  .b { grid-column: span 4; display: grid; gap: 12px; align-content: start; padding-top: 18px; border-top: 1px solid var(--ink); }
+  .b p:last-child { font-size: 16px; line-height: 1.5; }
+  @media (max-width: 900px) { .b { grid-column: 1 / -1; } }
+
+  .cv-block { padding-top: clamp(72px, 10vw, 140px); }
+  .cv { margin-top: 28px; row-gap: 28px; align-items: end; }
+  .cv .display { grid-column: 1 / span 7; max-width: 14ch; }
+  .cv-actions { grid-column: 9 / span 4; display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+  @media (max-width: 900px) {
+    .cv .display, .cv-actions { grid-column: 1 / -1; justify-content: flex-start; }
+  }
+</style>

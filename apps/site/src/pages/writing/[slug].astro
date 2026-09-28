@@ -1,0 +1,106 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('writing')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return posts.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, next: posts[(i + 1) % posts.length] },
+  }));
+}
+
+const { entry, next } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const date = d.date.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+
+<Base title={d.title} description={d.dek} flash="bubblegum" section="writing" image={`/cards/writing-${entry.id}.png`}>
+  <div class="progress" aria-hidden="true"></div>
+  <article class="wrap">
+    <header class="head">
+      <nav class="crumbs label" aria-label="Breadcrumb">
+        <a href="/writing/">Writing</a>
+        <span aria-hidden="true">/</span>
+        <span>{d.kind}</span>
+      </nav>
+      <h1 class="display display-xl">{d.title}</h1>
+      <p class="lede dek">{d.dek}</p>
+      <div class="meta">
+        <span class="label label-ink">Niel Cody</span>
+        <span class="label"><time datetime={d.date.toISOString()}>{date}</time></span>
+        <span class="label">{d.minutes} min read</span>
+        <span class:list={['pill', { 'is-ghost': d.status === 'Working draft' }]}>
+          <span class="dot" aria-hidden="true"></span>{d.status}
+        </span>
+      </div>
+    </header>
+
+    <div class="grid body">
+      <div class="prose content">
+        <Content />
+      </div>
+    </div>
+
+    <footer class="end">
+      <p class="label sign">— N.C.</p>
+      <a href={`/writing/${next.id}/`} class="next-link">
+        <span class="label">Read next</span>
+        <span class="display display-l">{next.data.title}</span>
+        <span class="go">{next.data.kind}, {next.data.minutes} min <span class="arrow" aria-hidden="true">→</span></span>
+      </a>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 60;
+    background: var(--bubblegum);
+    transform-origin: left;
+    transform: scaleX(0);
+    animation: progress linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes progress { to { transform: scaleX(1); } }
+  @supports not (animation-timeline: scroll()) { .progress { display: none; } }
+
+  .head { padding-top: clamp(28px, 4vw, 48px); display: grid; gap: 22px; }
+  .crumbs { display: flex; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+  .crumbs a { color: var(--ink); text-decoration: none; }
+  .crumbs a:hover { text-decoration: underline; }
+  .head h1 { margin-top: clamp(16px, 3vw, 40px); max-width: 15ch; }
+  .dek { max-width: 46ch; }
+  .meta { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; padding-top: 18px; border-top: 1px solid var(--rule); }
+
+  .body { margin-top: clamp(40px, 6vw, 80px); }
+  .content { grid-column: 3 / span 8; }
+  .content > :global(p:first-child)::first-letter {
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    font-stretch: 125%;
+    font-weight: 900;
+    font-size: 4.1em;
+    line-height: 0.8;
+  }
+  @media (max-width: 900px) { .content { grid-column: 1 / -1; } }
+
+  .end { margin-top: clamp(64px, 9vw, 120px); display: grid; gap: 48px; }
+  .sign { font-size: 13px; }
+  .next-link {
+    display: grid;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ink);
+    text-decoration: none;
+    justify-items: start;
+  }
+  .next-link .display { max-width: 18ch; }
+  .next-link:hover .arrow { transform: translateX(4px); }
+</style>

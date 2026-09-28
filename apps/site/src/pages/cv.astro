@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import { career } from '../data/career';
+import { site } from '../data/site';
+
+const achievements = [
+  'Took an AI agent from a two-person trade-show demo to production. In its first tracked month it was used by 199 customer organisations and 292 users, and it now takes actions inside a live point of sale.',
+  'Rebuilt a loyalty platform from bespoke builds into configurable multi-tenant SaaS. Delivery from weeks to under one; estate from under 10 instances to over 250.',
+  'Authored the company goal architecture after a missed year: cross-divisional, measurable, cascading. One quarter in, ahead of the prior year.',
+];
+const skills = [
+  'Product strategy and portfolio leadership',
+  'AI products in production: agents, evaluation, guardrails',
+  'Platform consolidation and data foundations',
+  'Loyalty, CRM and customer engagement',
+  'Point of sale, payments, menus and inventory',
+  'Building product, QA and product owner functions',
+  'Decision records, kill signals and outcome measurement',
+  'Hospitality operations and P&L',
+];
+const recent = career.filter((r) => r.phase !== 'floor');
+const earlier = career.filter((r) => r.phase === 'floor');
+---
+
+<Base title="CV" description="Niel Cody, product leader in hospitality software. One page, printable." flash="butter" section="about">
+  <div class="wrap page">
+    <div class="tools">
+      <a class="go" href="/about/"><span aria-hidden="true">←</span> About</a>
+      <button class="key is-ink" type="button" data-print>Print or save as PDF</button>
+    </div>
+
+    <article class="cv">
+      <header class="head">
+        <div>
+          <h1 class="display name">Niel Cody</h1>
+          <p class="role">Product leader, hospitality software</p>
+        </div>
+        <p class="contact label label-ink">
+          Australia<br />
+          <a href={site.linkedin}>linkedin.com/in/nielcody</a><br />
+          <a href="https://nielcody.com">nielcody.com</a>
+        </p>
+      </header>
+
+      <section>
+        <h2 class="h label label-ink">Summary</h2>
+        <p class="summary">
+          Product leader with over twenty years in hospitality: eight on the floor, from Michelin service to running three
+          venues, then the systems behind them. Leads five product areas across a group of six point-of-sale brands: AI,
+          menu and product management, insights, loyalty and inventory. Ships AI that acts, not just answers, and judges
+          everything by one test: will it work when the venue is full?
+        </p>
+      </section>
+
+      <section>
+        <h2 class="h label label-ink">Selected achievements</h2>
+        <ol class="ach">{achievements.map((a) => <li>{a}</li>)}</ol>
+      </section>
+
+      <section>
+        <h2 class="h label label-ink">Experience</h2>
+        <ol class="exp">
+          {
+            recent.map((r) => (
+              <li>
+                <div class="exp-h">
+                  <span class="exp-r">{r.role}</span>
+                  <span class="exp-o">{r.org}</span>
+                  <span class="exp-y label">
+                    {r.from} — {r.to === 'now' ? 'Present' : r.to}
+                  </span>
+                </div>
+                <p>{r.line}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="h label label-ink">Earlier career, on the floor</h2>
+        <ol class="earlier">
+          {
+            earlier.map((r) => (
+              <li>
+                <span class="exp-r">{r.role}</span>, {r.org}
+                <span class="label">
+                  {' '}
+                  {r.from} — {r.to}
+                </span>
+                {r.org === 'Etive Pubs' && <span class="e-note"> · {r.line}</span>}
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="h label label-ink">Core skills</h2>
+        <ul class="skills">{skills.map((s) => <li>{s}</li>)}</ul>
+      </section>
+    </article>
+  </div>
+</Base>
+
+<script>
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .page { padding-top: clamp(24px, 3vw, 40px); }
+  .tools { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .cv {
+    max-width: 880px;
+    margin-inline: auto;
+    padding: clamp(24px, 5vw, 64px);
+    background: #fbfaf7;
+    border: 1px solid var(--ink);
+    box-shadow: 0 30px 60px -40px rgb(20 20 20 / 0.35);
+    display: grid;
+    gap: 26px;
+  }
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; padding-bottom: 18px; border-bottom: 3px solid var(--ink); }
+  .name { font-size: clamp(2.4rem, 6vw, 4rem); }
+  .role { margin-top: 8px; font-weight: 560; font-size: 17px; }
+  .contact { text-align: right; line-height: 1.7; }
+  .contact a { color: inherit; }
+  .h { padding-bottom: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--rule); }
+  .summary { font-size: 16px; line-height: 1.55; }
+  .ach { padding-left: 1.2em; display: grid; gap: 8px; font-size: 15px; line-height: 1.5; }
+  .ach li::marker { font-family: var(--mono); font-size: 0.8em; }
+  .exp { list-style: none; padding: 0; display: grid; gap: 14px; }
+  .exp-h { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+  .exp-r { font-weight: 700; font-size: 15.5px; }
+  .exp-o { font-size: 15px; color: var(--grey); }
+  .exp-y { margin-left: auto; }
+  .exp p { margin-top: 4px; font-size: 14.5px; line-height: 1.5; }
+  .earlier { list-style: none; padding: 0; display: grid; gap: 6px; font-size: 14.5px; }
+  .e-note { color: var(--grey); }
+  .skills { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; font-size: 14.5px; }
+  .skills li::before { content: '— '; color: var(--grey); }
+  @media (max-width: 640px) { .skills { grid-template-columns: 1fr; } .contact { text-align: left; } }
+
+  @media print {
+    @page { size: A4; margin: 14mm 16mm; }
+    :global(.site-header), :global(.site-footer), :global(.skip), .tools { display: none !important; }
+    :global(body::before) { display: none !important; }
+    :global(body), :global(html) { background: #fff !important; }
+    .page { padding: 0; }
+    .cv { border: 0; box-shadow: none; padding: 0; background: #fff; gap: 14px; max-width: none; }
+    .name { font-size: 30pt; }
+    .summary, .ach, .exp p, .earlier, .skills { font-size: 9.5pt; }
+    .exp-r { font-size: 10pt; }
+    .exp { gap: 8px; }
+    a { text-decoration: none; }
+  }
+</style>

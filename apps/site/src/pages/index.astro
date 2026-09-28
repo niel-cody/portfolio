@@ -1,0 +1,420 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Sticker from '../components/Sticker.astro';
+import Docket from '../components/Docket.astro';
+import Photocard from '../components/Photocard.astro';
+import Status from '../components/Status.astro';
+import { evidence } from '../data/site';
+import { playgrounds } from '../data/playgrounds';
+
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const writing = (await getCollection('writing'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const council = playgrounds[0];
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-AU', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
+---
+
+<Base flash="orange" section="home">
+  <!-- 00 Hero -->
+  <section class="hero wrap">
+    <div class="hero-meta">
+      <p class="label label-ink">Niel Cody</p>
+      <p class="label">Product leader, hospitality software</p>
+      <p class="label hide-s">Index 00 — Home</p>
+    </div>
+
+    <h1 class="display display-xxl headline">
+      <span class="ln">Software</span>
+      <span class="ln">that holds on</span>
+      <span class="ln">a Friday night.</span>
+    </h1>
+
+    <Sticker
+      class="hero-sticker"
+      ring="The Friday Night Test ✶ If it does not hold, it is not finished ✶ "
+      center="8pm"
+    />
+
+    <div class="grid hero-foot">
+      <p class="lede intro">
+        I spent eight years on the hospitality floor, from Michelin service to running three venues. Then I crossed the
+        table. Today I lead product across AI, menus, insights, loyalty and inventory for a group of six point-of-sale
+        brands.
+      </p>
+      <div class="hero-side">
+        <div class="pills">
+          <Status label="AI in production" live />
+          <Status label="Australia" ghost />
+        </div>
+        <div class="hero-cta">
+          <a class="key is-flash" href="/work/">See the work <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="key" href="/playground/council/">Convene the Council <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 The readout -->
+  <section class="wrap block" aria-labelledby="readout">
+    <SectionHead n="01" title="The readout" aside="Every figure traced. Nothing rounded up." id="readout" />
+    <div class="readout panel">
+      {
+        evidence.map((e, i) => (
+          <div class="cell reveal" data-delay={String(i)}>
+            <p class="num big">{e.value}</p>
+            <p class="label label-ink unit">{e.unit}</p>
+            <p class="what">{e.label}</p>
+            <p class="label src">{e.note}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 02 The test -->
+  <section class="test" aria-labelledby="test">
+    <div class="wrap">
+      <SectionHead n="02" title="The Friday Night Test" aside="The only rule I build by" id="test" />
+      <div class="grid test-body">
+        <div class="test-copy">
+          <p class="display display-l reveal">
+            Most hospitality software is specified by people who have never worked a Friday night.
+          </p>
+          <p class="display display-l reveal quiet" data-delay="1">You can tell.</p>
+          <div class="prose test-prose reveal" data-delay="2">
+            <p>
+              It demos beautifully, then meets 8pm: a queue out the door, a jammed printer, someone off sick, and a
+              venue manager who does not care what the roadmap said.
+            </p>
+            <p>
+              I learned that the hard way, running operations across three venues turning over £3.5m. Every improvement
+              had to hold at 8pm on a Saturday or it was not an improvement. I have built software the same way since.
+            </p>
+            <p><strong>If it does not hold under pressure, it is not finished.</strong></p>
+          </div>
+          <a class="go" href="/writing/the-friday-night-test/">Read the essay <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="test-docket">
+          <Docket />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Work -->
+  <section class="wrap block" aria-labelledby="work">
+    <SectionHead n="03" title="Selected work" aside="Written as decision records" id="work" />
+    <ol class="work-list">
+      {
+        work.map((w, i) => (
+          <li class="reveal">
+            <a href={`/work/${w.id}/`} class="work-row">
+              <span class="label idx">{String(i + 1).padStart(2, '0')}</span>
+              <span class="wt">
+                <span class="label k">{w.data.kicker}</span>
+                <span class="display display-m title">{w.data.title}</span>
+              </span>
+              <span class="wn">
+                <span class="num">{w.data.headline.value}</span>
+                <span class="label">{w.data.headline.label}</span>
+              </span>
+              <span class="wm">
+                <span class="label">{w.data.period}</span>
+                <span class="pill">
+                  <span class="dot" aria-hidden="true" />
+                  {w.data.status}
+                </span>
+              </span>
+              <span class="arrow-cell" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <!-- 04 Playground -->
+  <section class="wrap block" aria-labelledby="play">
+    <SectionHead n="04" title="Playground" aside="Things I build on my own time" id="play" />
+    <div class="grid play">
+      <div class="play-copy">
+        <p class="display display-l">Don't read about it. Play with it.</p>
+        <p class="lede">
+          Senior product people mostly show opinions. These are things I built and left up for anyone to use, with how
+          they work, the decisions behind them, and a guide to build your own.
+        </p>
+        <ul class="play-list">
+          {
+            playgrounds.map((p) => (
+              <li>
+                <a href={`/playground/${p.slug}/`}>
+                  <span class="label">No. {p.number}</span>
+                  <span class="pt">{p.title}</span>
+                  <span class="label">{p.kind}</span>
+                  <span class="arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="play-card">
+        <Photocard
+          title={council.title}
+          glyph={council.glyph}
+          era="Flagship"
+          eraColour="ink"
+          line={council.line}
+          number={council.number}
+          status={council.status}
+          spec={council.spec}
+          href="/playground/council/"
+          cta="Convene"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Writing -->
+  {
+    writing.length > 0 && (
+      <section class="wrap block" aria-labelledby="writing">
+        <SectionHead n="05" title="Writing" aside="What breaks when the room is full" id="writing" />
+        <div class="grid writing">
+          {writing.map((p) => (
+            <a class="post reveal" href={`/writing/${p.id}/`}>
+              <span class="label">
+                {p.data.kind} — {fmt(p.data.date)}
+              </span>
+              <span class="display display-s">{p.data.title}</span>
+              <span class="dek">{p.data.dek}</span>
+              <span class="label">{p.data.minutes} min read →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 06 Now -->
+  <section class="wrap block" aria-labelledby="now">
+    <SectionHead n="06" title="Now" aside="Updated September 2026" id="now" />
+    <div class="grid now">
+      <div class="now-item">
+        <p class="label label-ink">At work</p>
+        <p>Making an AI agent safe enough to leave running on a Friday night, and bringing six products onto one cloud platform without breaking what venues already depend on.</p>
+      </div>
+      <div class="now-item">
+        <p class="label label-ink">On my own time</p>
+        <p>Building the Council in public: a panel of hospitality operators that fails bad ideas before a real venue has to.</p>
+      </div>
+      <div class="now-item">
+        <p class="label label-ink">Writing</p>
+        <p>A series on what breaks in hospitality software when the room is full. First round is on me.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    padding-top: clamp(28px, 4vw, 48px);
+    padding-bottom: clamp(56px, 8vw, 110px);
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .headline {
+    margin-top: clamp(36px, 6vw, 84px);
+    display: grid;
+  }
+  .ln { display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ln {
+      animation: rise 900ms var(--ease) both;
+    }
+    .ln:nth-child(2) { animation-delay: 90ms; }
+    .ln:nth-child(3) { animation-delay: 180ms; }
+    @keyframes rise {
+      from { opacity: 0; translate: 0 0.28em; }
+    }
+  }
+  :global(.hero-sticker) {
+    right: calc(var(--gutter) + 1vw);
+    top: clamp(120px, 15vw, 210px);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.hero-sticker) { animation: pop 700ms 500ms var(--spring) both; }
+    @keyframes pop { from { scale: 0; rotate: -90deg; } }
+  }
+  .hero-foot {
+    margin-top: clamp(40px, 6vw, 80px);
+    row-gap: 32px;
+    align-items: end;
+  }
+  .intro { grid-column: 1 / span 6; }
+  .hero-side {
+    grid-column: 8 / span 5;
+    display: grid;
+    gap: 18px;
+    justify-items: end;
+  }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .hero-cta { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+  @media (max-width: 900px) {
+    .intro, .hero-side { grid-column: 1 / -1; }
+    .hero-side { justify-items: start; }
+    .pills, .hero-cta { justify-content: flex-start; }
+    :global(.hero-sticker) { top: auto; bottom: 34%; right: var(--gutter); }
+  }
+  @media (max-width: 600px) {
+    .hide-s { display: none; }
+    .hero-meta p:first-child { display: none; }
+    :global(.hero-sticker) { bottom: auto; top: calc(clamp(28px, 4vw, 48px) + 118px); width: 96px; right: var(--gutter); }
+  }
+
+  .block { padding-top: clamp(72px, 10vw, 140px); }
+
+  /* Readout */
+  .readout {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .cell {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: clamp(20px, 2.4vw, 32px);
+    min-height: 300px;
+  }
+  .cell + .cell { border-left: 1px solid var(--ink); }
+  .big { font-size: clamp(4.2rem, 7.6vw, 7.4rem); }
+  .unit { margin-top: 2px; }
+  .what { font-size: 15.5px; line-height: 1.4; font-weight: 520; margin-top: auto; padding-top: 18px; max-width: 28ch; }
+  .src { text-transform: none; letter-spacing: 0.01em; font-size: 12px; }
+  @media (max-width: 1000px) {
+    .readout { grid-template-columns: repeat(2, 1fr); }
+    .cell:nth-child(3) { border-left: 0; }
+    .cell:nth-child(n + 3) { border-top: 1px solid var(--ink); }
+  }
+  @media (max-width: 560px) {
+    .readout { grid-template-columns: 1fr; }
+    .cell + .cell { border-left: 0; border-top: 1px solid var(--ink); }
+    .cell { min-height: 0; }
+  }
+
+  /* The test */
+  .test {
+    margin-top: clamp(72px, 10vw, 140px);
+    padding-block: clamp(20px, 3vw, 36px) clamp(64px, 9vw, 120px);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .test :global(.sect-head) { border-top-color: var(--paper); }
+  .test :global(.label), .test :global(.label-ink) { color: var(--paper); }
+  .test :global(.sect-head .a) { color: rgb(241 239 234 / 0.6); }
+  .test-body { margin-top: clamp(40px, 6vw, 80px); row-gap: 56px; align-items: center; }
+  .test-copy { grid-column: 1 / span 7; display: grid; gap: 22px; justify-items: start; }
+  .test-copy .display { max-width: 18ch; }
+  .quiet { color: rgb(241 239 234 / 0.45); }
+  .test-prose { color: rgb(241 239 234 / 0.86); margin-top: 8px; }
+  .test-prose strong { color: var(--paper); }
+  .test .go { color: var(--paper); border-color: var(--paper); }
+  .test-docket { grid-column: 9 / span 4; justify-self: center; }
+  @media (max-width: 900px) {
+    .test-copy, .test-docket { grid-column: 1 / -1; }
+  }
+
+  /* Work list */
+  .work-list { list-style: none; padding: 0; margin-top: 8px; }
+  .work-row {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 220px 150px 32px;
+    align-items: center;
+    gap: 20px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    position: relative;
+    transition: padding var(--mid) var(--ease);
+  }
+  .work-row::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(-1 * var(--gutter) / 2);
+    background: var(--paper-lift);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity var(--mid) var(--ease);
+  }
+  .work-row:hover::before { opacity: 1; }
+  .wt { display: grid; gap: 8px; }
+  .title { transition: letter-spacing var(--mid) var(--ease); }
+  .work-row:hover .title { letter-spacing: -0.02em; }
+  .wn { display: grid; gap: 6px; }
+  .wn .num { font-size: 44px; }
+  .wm { display: grid; gap: 8px; justify-items: start; }
+  .arrow-cell {
+    font-size: 22px;
+    transition: transform var(--mid) var(--spring);
+  }
+  .work-row:hover .arrow-cell { transform: translateX(6px); }
+  @media (max-width: 1000px) {
+    .work-row { grid-template-columns: 40px minmax(0, 1fr) 32px; }
+    .wn, .wm { display: none; }
+  }
+
+  /* Playground */
+  .play { margin-top: clamp(32px, 5vw, 64px); row-gap: 48px; align-items: start; }
+  .play-copy { grid-column: 1 / span 6; display: grid; gap: 24px; }
+  .play-card { grid-column: 8 / span 5; justify-self: end; width: 100%; max-width: 380px; }
+  .play-list { list-style: none; padding: 0; border-top: 1px solid var(--ink); margin-top: 12px; }
+  .play-list a {
+    display: grid;
+    grid-template-columns: 64px 1fr auto 24px;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+  }
+  .play-list .pt { font-stretch: 118%; font-weight: 760; font-size: 20px; letter-spacing: -0.02em; }
+  .play-list .arrow { transition: transform var(--mid) var(--spring); }
+  .play-list a:hover .arrow { transform: translateX(4px); }
+  @media (max-width: 900px) {
+    .play-copy, .play-card { grid-column: 1 / -1; justify-self: start; }
+  }
+
+  /* Writing */
+  .writing { margin-top: 28px; row-gap: 20px; }
+  .post {
+    grid-column: span 4;
+    display: grid;
+    align-content: start;
+    gap: 14px;
+    padding: 22px 0 26px;
+    border-top: 1px solid var(--ink);
+    text-decoration: none;
+  }
+  .post .display-s { transition: color var(--fast) var(--ease); }
+  .post:hover .display-s { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .dek { color: var(--grey); font-size: 15.5px; line-height: 1.45; }
+  @media (max-width: 900px) { .post { grid-column: 1 / -1; } }
+
+  /* Now */
+  .now { margin-top: 28px; row-gap: 28px; }
+  .now-item { grid-column: span 4; display: grid; gap: 10px; align-content: start; }
+  .now-item p:last-child { font-size: 16.5px; line-height: 1.5; max-width: 36ch; }
+  @media (max-width: 900px) { .now-item { grid-column: 1 / -1; } }
+</style>

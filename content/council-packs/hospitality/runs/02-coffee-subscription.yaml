@@ -1,0 +1,117 @@
+id: coffee-subscription
+title: A coffee subscription for regulars
+short: Sell a $39 a month plan, one coffee a day, at a two-site café.
+decision: >
+  A two-site café launches a subscription: $39 a month for one coffee a day,
+  redeemed through an app. The goal is guaranteed monthly revenue and more
+  regular visits.
+recorded: 2026-09-28
+kind: illustrative
+
+takes:
+  mara:
+    stance: conditional
+    confidence: 52
+    headline: Subscriptions work when they sell the second thing, not the first.
+    take: >
+      We tried a pint club once. Members came in more, and spent less per visit
+      on the thing we discounted, but more on food. That is the only reason it
+      paid. A coffee plan only works if it brings people in for the toastie and
+      the muffin. On coffee alone you are selling your best product at a loss
+      to your best customers.
+    breaks_at: Monday 7.40am — the rush is all subscribers, and the till takes nothing.
+    would_need: Food attach rate for subscribers against non-subscribers, from week one.
+
+  tomas:
+    stance: fail
+    confidence: 81
+    headline: I would be selling my regulars their own habit back, cheaper.
+    take: >
+      Do the maths on a customer who already comes every weekday. At $39 a
+      month they pay a fraction of what they pay now for the same coffees.
+      My regulars will sign up first, because it is a great deal for them.
+      The people I actually want, the ones who come twice a week, will not
+      change their habits for it. I would guarantee revenue and lower it.
+    breaks_at: Day one — twelve of my daily regulars sign up, and my takings drop the same week.
+    would_need: A plan priced on what regulars spend now, capped to weekdays, with food attached.
+
+  priya:
+    stance: conditional
+    confidence: 45
+    headline: If it brings people in, give them a reason to eat.
+    take: >
+      From the kitchen side, a coffee plan is a footfall tool, nothing more.
+      If the pastry case and the kitchen are ready for it, fine. If it means
+      a queue of people who only want the free coffee, the kitchen sees
+      nothing and front of house gets slower. Tie it to food or leave it.
+    breaks_at: 8.10am — a queue for subscription coffees blocks the people ordering food.
+    would_need: A bundle that includes something from the kitchen.
+
+  keith:
+    stance: conditional
+    confidence: 50
+    headline: This is a membership. Run it like one.
+    take: >
+      We have run memberships for decades. They work when they are about
+      belonging, not just discount. Members get recognised, get first look
+      at things and feel part of the place. A bare coffee discount through an
+      app is a coupon with a monthly fee. Make it a membership with a card and
+      a name, and I think it keeps people for years.
+    breaks_at: Month three — the novelty goes and cancellations spike, because nothing but price held them.
+    would_need: Retention at month three and month six, not sign-ups in month one.
+
+  jess:
+    stance: fail
+    confidence: 62
+    headline: Subscriptions are a churn machine unless something new keeps happening.
+    take: >
+      Everyone my age has a graveyard of subscriptions. We sign up for the
+      deal and cancel the moment we notice the charge. If the only thing that
+      changes month to month is the bill, you will get a spike and then a
+      slide. It needs a reason to stay: a monthly special, a members' drink,
+      something that makes people feel they are missing out if they leave.
+    breaks_at: The first renewal — people see $39 on their statement and cancel.
+    would_need: A plan for month two, not just launch day.
+
+  sam:
+    stance: conditional
+    confidence: 58
+    headline: Upfront cash is nice. Unredeemed coffees are not revenue until they are.
+    take: >
+      The cash arrives early, which helps a small business. But the accounting
+      and the maths both depend on breakage, the coffees people pay for and
+      never drink. If redemption is high, the plan loses money on every
+      regular. I would want to model three redemption rates before launch and
+      set the price from the worst one, not the average.
+    breaks_at: The first month-end — revenue is up, margin is down, and nobody can say why.
+    would_need: A price set from a worst-case redemption rate, and margin per subscriber tracked monthly.
+
+chair:
+  summaries:
+    pass: >
+      The panel sees a real opportunity, but only as a membership, not a
+      discount. Guaranteed revenue and more visits are possible if the plan
+      sells food alongside coffee and gives people a reason to stay after the
+      first month.
+    conditional: >
+      Promising as a membership, loss-making as specified. The risk is not
+      that nobody signs up. It is that the wrong people do: daily regulars who
+      already pay full price. Reprice it on what regulars spend today, tie it
+      to food, and judge it on retention and margin per subscriber, not sign-ups.
+    fail: >
+      Not as specified. At this price the plan sells the café's best customers
+      their existing habit at a steep discount, so it is likely to raise
+      visits and lower revenue at the same time. The panel's strongest
+      objection comes from the owner-operator, and it is arithmetic, not taste.
+  kill_signals:
+    - More than half of the first month's subscribers were already daily regulars. Stop sales and reprice.
+    - Margin per subscriber is negative after the first full month. Stop sales and reprice.
+    - Retention at month three is below 60%. Rebuild it as a membership or close it.
+  assumptions:
+    - That subscribers will visit more often, rather than paying less for visits they already make.
+    - That enough coffees go unredeemed to cover the discount.
+    - That subscribers will buy food they would not have bought otherwise.
+  questions:
+    - Of your ten best regulars, how many coffees do they buy in a normal week?
+    - Have you ever run a loyalty card or a club, and what happened in month three?
+    - What would a regular need to get from you, other than a discount, to pay every month?

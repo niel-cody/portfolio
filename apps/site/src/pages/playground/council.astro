@@ -1,0 +1,283 @@
+---
+import { resolve } from 'node:path';
+import { loadPack } from 'council-core/pack';
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import Sticker from '../../components/Sticker.astro';
+import Status from '../../components/Status.astro';
+import Council from '../../islands/Council.tsx';
+
+const pack = loadPack(resolve(process.cwd(), '../../content/council-packs/hospitality'));
+const order = (id: string) => {
+  const i = pack.manifest.default_members.indexOf(id);
+  return i === -1 ? 99 : i;
+};
+const members = [...pack.members].sort((a, b) => order(a.id) - order(b.id)).map(({ id, name, role, venue, initial, cares_about }) => ({
+  id, name, role, venue, initial, cares_about,
+}));
+
+const decisions = [
+  ['Four members and a chair, not six with peer review', 'Peer review doubles the wait. It comes back only if the eval shows better verdicts. Resembling a good project is not a reason to copy its latency.'],
+  ['Dissent is tested, not hoped for', 'Twenty deliberately bad ideas. The panel must hold back at least eighteen, or the build is broken, whatever the demo looks like.'],
+  ['A strong objection is never averaged away', 'One member failing an idea at 70% confidence or more caps the verdict. The chair names the dissent instead of smoothing it over.'],
+  ['Recorded runs before live runs', 'The interaction is made perfect first, with no meter running. Live runs follow with caps on tokens, concurrency and daily spend, enforced in code.'],
+  ['No bring-your-own-key on the site', 'Pasting an API key into a stranger’s portfolio is a trust problem bigger than the cost problem. Clone it and run it locally instead.'],
+  ['The visitor’s text is material, never instructions', 'Every prompt says so. Obvious emails, phone and card numbers are masked before anything leaves the machine. Nothing is stored.'],
+];
+
+const colophon = [
+  ['Members', 'Claude Haiku 4.5, four in parallel, 600 output tokens each'],
+  ['Chair', 'Claude Sonnet 5, 1,200 output tokens, structured output'],
+  ['Budget', 'About US$0.06 a run, expected case. Shared brief prompt-cached'],
+  ['Pack', 'Markdown and YAML, validated against a schema at build time'],
+  ['Quality', 'Unit tests on the pack and the verdict rules, plus the 20-idea sycophancy eval'],
+  ['This page', 'Astro, one React island, CSS for every motion. No model calls'],
+  ['Personas', 'Six composites written for this site. Not real people, and nothing from any employer'],
+];
+---
+
+<Base
+  title="The Council"
+  description="Put a decision in front of four hospitality operators and a chair. Get a verdict, a confidence, the kill signals to watch and a human sign-off."
+  flash="acid"
+  section="playground"
+  image="/cards/council.png"
+>
+  <section class="wrap intro">
+    <nav class="crumbs label" aria-label="Breadcrumb">
+      <a href="/playground/">Playground</a><span aria-hidden="true">/</span><span>No. 01</span>
+      <span class="era">Era 01 — Acid</span>
+    </nav>
+    <div class="title-row">
+      <h1 class="display display-xxl">The Council</h1>
+      <Sticker class="council-sticker" ring="New era ✶ The Friday Night Test ✶ Now playing ✶ " center="01" />
+    </div>
+    <div class="grid sub">
+      <p class="lede">
+        Put a decision in front of four hospitality operators and a chair. They answer on their own, run it through a
+        Friday service, and disagree when they disagree. You get a verdict you can forward.
+      </p>
+      <div class="pills">
+        <Status label="Illustrative runs" live />
+        <Status label="Live runs next" ghost />
+        <Status label="MIT licence" ghost />
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap stage" aria-label="The Council, interactive">
+    <p class="label howto">Pick a decision. Seat four of six. Convene. Then swap a seat and watch the verdict move.</p>
+    <Council
+      client:load
+      packName={pack.manifest.name}
+      packVersion={pack.manifest.version}
+      seats={pack.manifest.seats}
+      defaults={pack.manifest.default_members}
+      members={members}
+      runs={pack.runs}
+    />
+    <p class="label note">
+      Illustrative runs: the members’ answers are written to the pack’s rules to show the interaction. The verdict and
+      confidence are computed live from the seats you choose, using the same rules the chair follows.
+    </p>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="01" title="What it does" aside="And what it is not" />
+    <div class="grid two">
+      <p class="display display-m">Synthetic users agree with everything. This panel is built to argue.</p>
+      <div class="prose">
+        <p>
+          Hospitality operators are the hardest users in software to reach. They work nights, they do not answer
+          surveys, and one bad Friday decides whether a feature survives. So teams build on guesses.
+        </p>
+        <p>
+          Generic synthetic users do not fix that. They know nothing about a docket rail, and models tend to please.
+          The Council adds what they miss: operators written from lived detail, a service scenario every idea must
+          survive, dissent that is tested, and a <strong>decision record</strong>, not a transcript.
+        </p>
+        <p>
+          It does not replace talking to operators. It tells you what to ask them. Every record ends with three
+          questions for real people, because the panel advises and a person decides.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="02" title="How it works" aside="One loop, five steps" />
+    <figure class="loop" aria-label="The Council loop: a decision goes to a shared brief, then four members answer in parallel, then the chair writes the decision record, then a person signs it.">
+      <svg viewBox="0 0 1200 300" role="img" aria-hidden="true">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+          </marker>
+        </defs>
+        <g class="node"><rect x="10" y="110" width="170" height="80"></rect><text x="95" y="146">Decision</text><text class="sub" x="95" y="168">under 1,000 words</text></g>
+        <g class="node"><rect x="240" y="110" width="170" height="80"></rect><text x="325" y="146">Shared brief</text><text class="sub" x="325" y="168">scenario, rules, cached</text></g>
+        <g class="node m"><rect x="470" y="14" width="190" height="56"></rect><text x="565" y="47">Member 1</text></g>
+        <g class="node m"><rect x="470" y="86" width="190" height="56"></rect><text x="565" y="119">Member 2</text></g>
+        <g class="node m"><rect x="470" y="158" width="190" height="56"></rect><text x="565" y="191">Member 3</text></g>
+        <g class="node m"><rect x="470" y="230" width="190" height="56"></rect><text x="565" y="263">Member 4</text></g>
+        <g class="node chair"><rect x="720" y="110" width="200" height="80"></rect><text x="820" y="146">Chair</text><text class="sub" x="820" y="168">verdict, dissent, kill signals</text></g>
+        <g class="node you"><rect x="980" y="110" width="210" height="80"></rect><text x="1085" y="146">You sign it</text><text class="sub" x="1085" y="168">agree, or disagree because</text></g>
+        <g class="edges" marker-end="url(#ah)">
+          <path d="M180,150 H236" marker-end="url(#ah)"></path>
+          <path d="M410,150 C440,150 440,42 466,42" marker-end="url(#ah)"></path>
+          <path d="M410,150 C440,150 440,114 466,114" marker-end="url(#ah)"></path>
+          <path d="M410,150 C440,150 440,186 466,186" marker-end="url(#ah)"></path>
+          <path d="M410,150 C440,150 440,258 466,258" marker-end="url(#ah)"></path>
+          <path d="M660,42 C690,42 690,150 716,150" marker-end="url(#ah)"></path>
+          <path d="M660,114 C690,114 690,150 716,150" marker-end="url(#ah)"></path>
+          <path d="M660,186 C690,186 690,150 716,150" marker-end="url(#ah)"></path>
+          <path d="M660,258 C690,258 690,150 716,150" marker-end="url(#ah)"></path>
+          <path d="M920,150 H976" marker-end="url(#ah)"></path>
+        </g>
+      </svg>
+      <figcaption>
+        <ol class="steps">
+          <li><span class="label label-ink">01</span> You state the decision. No attachments. Personal data is masked.</li>
+          <li><span class="label label-ink">02</span> One shared brief: the Friday scenario and the panel’s rules. Written once, cached for all four.</li>
+          <li><span class="label label-ink">03</span> Four members answer in parallel. None sees another’s answer, so nobody anchors.</li>
+          <li><span class="label label-ink">04</span> The chair writes the record: verdict, confidence, dissent, kill signals, assumptions, questions.</li>
+          <li><span class="label label-ink">05</span> A person signs it. That click is the evidence the tool was useful.</li>
+        </ol>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="03" title="Decisions made, and why" aside="Written down so they can be wrong" />
+    <ol class="dec-list">
+      {
+        decisions.map(([t, d], i) => (
+          <li class="reveal">
+            <span class="label label-ink">{String(i + 1).padStart(2, '0')}</span>
+            <span class="dt">{t}</span>
+            <span class="dd">{d}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="wrap block" id="build-your-own">
+    <SectionHead n="04" title="Build your own" aside="Five minutes, your own key" />
+    <div class="grid two">
+      <div class="prose">
+        <p>
+          The engine is a small TypeScript package. The panel is a folder of Markdown and YAML, so you can write your
+          own pack for any domain: SaaS buyers, a school board, your own leadership team. The schema tells you what is
+          missing.
+        </p>
+        <ol>
+          <li>Clone the repository and install the package.</li>
+          <li>Set your Anthropic API key in your shell.</li>
+          <li>Run a decision through the hospitality pack, or copy it and write your own.</li>
+          <li>Before you trust a new pack, run the eval. If it passes more than two bad ideas, fix the prompts.</li>
+        </ol>
+        <p><a href="/writing/how-i-built-a-product-council/">Read the build log →</a></p>
+      </div>
+      <div class="code">
+        <pre><code><span class="c"># 1. Get it</span>
+git clone https://github.com/niel-cody/portfolio
+cd portfolio/packages/council-core && npm install
+
+<span class="c"># 2. Your key, your machine</span>
+export ANTHROPIC_API_KEY=sk-ant-...
+
+<span class="c"># 3. Convene</span>
+npx tsx src/cli.ts \
+  --members mara,priya,keith,sam \
+  "Launch a $15 bottomless brunch on Sundays"
+
+<span class="c"># 4. Keep it honest</span>
+npx tsx src/eval.ts   <span class="c"># 20 bad ideas, must hold 18</span></code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap block">
+    <SectionHead n="05" title="Colophon" aside="What it is made of" />
+    <dl class="colophon">
+      {
+        colophon.map(([k, v]) => (
+          <div>
+            <dt class="label label-ink">{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <div class="status-row">
+      <Status label="Status: illustrative runs, September 2026" live />
+      <a class="go" href="/playground/">All playgrounds <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-top: clamp(28px, 4vw, 48px); }
+  .crumbs { display: flex; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+  .crumbs a { color: var(--ink); text-decoration: none; }
+  .crumbs a:hover { text-decoration: underline; }
+  .era { margin-left: auto; }
+  .title-row { position: relative; margin-top: clamp(20px, 3vw, 40px); }
+  :global(.council-sticker) { right: 0; top: -10px; }
+  @media (max-width: 700px) { :global(.council-sticker) { display: none; } }
+  .sub { margin-top: 28px; row-gap: 20px; align-items: end; }
+  .sub .lede { grid-column: 1 / span 7; max-width: 48ch; }
+  .pills { grid-column: 9 / span 4; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+  @media (max-width: 900px) {
+    .sub .lede, .pills { grid-column: 1 / -1; justify-content: flex-start; }
+  }
+
+  .stage { margin-top: clamp(40px, 6vw, 72px); display: grid; gap: 16px; }
+  .howto { color: var(--ink); }
+  .note { max-width: 90ch; text-transform: none; letter-spacing: 0.01em; font-size: 12.5px; }
+
+  .block { padding-top: clamp(72px, 10vw, 140px); }
+  .two { margin-top: 28px; row-gap: 32px; align-items: start; }
+  .two > :first-child { grid-column: 1 / span 5; }
+  .two > :last-child { grid-column: 7 / span 6; }
+  .two .display-m { max-width: 16ch; }
+  @media (max-width: 900px) { .two > * { grid-column: 1 / -1 !important; } }
+
+  .loop { margin-top: 28px; padding: clamp(16px, 2.4vw, 28px); border: 1px solid var(--ink); background: var(--paper-lift); }
+  .loop svg { width: 100%; height: auto; color: var(--ink); overflow: visible; }
+  .loop rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+  .loop .m rect { fill: var(--paper-lift); }
+  .loop .chair rect { fill: var(--acid); }
+  .loop .you rect { fill: var(--ink); }
+  .loop .you text { fill: var(--paper); }
+  .loop text { font-family: var(--sans); font-stretch: 115%; font-weight: 760; font-size: 20px; text-anchor: middle; fill: var(--ink); letter-spacing: -0.01em; }
+  .loop text.sub { font-family: var(--mono); font-stretch: 100%; font-weight: 400; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .loop .edges path { fill: none; stroke: currentColor; stroke-width: 1.2; }
+  .steps { list-style: none; padding: 0; margin-top: 24px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+  .steps li { display: grid; gap: 8px; font-size: 14px; line-height: 1.45; padding-top: 12px; border-top: 1px solid var(--rule); }
+  @media (max-width: 960px) { .steps { grid-template-columns: 1fr; } .loop svg { display: none; } .steps { margin-top: 0; } }
+
+  .dec-list { list-style: none; padding: 0; margin-top: 8px; }
+  .dec-list li { display: grid; grid-template-columns: 56px minmax(0, 5fr) minmax(0, 6fr); gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+  .dt { font-stretch: 115%; font-weight: 760; font-size: 19px; letter-spacing: -0.015em; line-height: 1.2; }
+  .dd { font-size: 16px; line-height: 1.5; }
+  @media (max-width: 860px) { .dec-list li { grid-template-columns: 40px 1fr; } .dd { grid-column: 2; } }
+
+  .code pre {
+    margin: 0;
+    padding: 22px 24px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .code .c { color: var(--acid); }
+
+  .colophon { margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+  .colophon div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .colophon dd { font-size: 15.5px; line-height: 1.45; }
+  @media (max-width: 860px) { .colophon { grid-template-columns: 1fr; } }
+  .status-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 28px; }
+</style>

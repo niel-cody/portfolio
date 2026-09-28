@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="86'd" description="This page is off the menu." flash="orange">
+  <section class="wrap nf">
+    <p class="label label-ink">Error 404</p>
+    <h1 class="display display-xxl">86'd.</h1>
+    <p class="lede">That page is off the menu tonight. The kitchen apologises. Here is what is still on.</p>
+    <div class="cta">
+      <a class="key is-flash" href="/">Home <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="key" href="/work/">Work</a>
+      <a class="key" href="/playground/council/">The Council</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding-top: clamp(48px, 10vw, 140px); display: grid; gap: 28px; justify-items: start; }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; }
+</style>

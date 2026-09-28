@@ -1,0 +1,52 @@
+---
+import PlaygroundPage from '../../components/PlaygroundPage.astro';
+import Reprice from '../../islands/Reprice.tsx';
+---
+
+<PlaygroundPage
+  title="Reprice"
+  number="02"
+  era="Era 02 — Bubblegum"
+  flash="bubblegum"
+  sticker="Margin back"
+  status="Fixture data"
+  description="Card surcharges come off Australian bills. Reprice wins the margin back with the fewest price moves a regular would notice."
+  lede="Card surcharges are coming off Australian bills. Reprice finds the smallest set of price moves that wins the margin back, without touching the prices your regulars remember."
+  howto="Move the dials. Switch the anchors off and watch the flat white move. Then download the price file."
+  what={{
+    headline: 'Every venue has one lever left that it fully controls. Price.',
+    body: [
+      'From 1 October 2026, surcharges on eftpos, Mastercard and Visa payments are banned in Australia. Venues that relied on a card surcharge lose a line of revenue overnight, after a year of rising wages and costs.',
+      'The obvious fix is a flat rise on everything. It is also the worst one. Regulars know three or four prices by heart, and those are the ones they judge you by. Reprice leaves those alone and spreads the rise where it is least likely to be noticed.',
+      'It is a small, honest tool, the kind I used to build in a spreadsheet for independent operators. <strong>The sample menu and volumes are invented.</strong> The method is the point.',
+    ],
+  }}
+  how={[
+    ['Size the gap', 'Weekly revenue, times the share paid by card, times the surcharge you used to add. That is the target.'],
+    ['Lock the anchors', 'The prices regulars remember are taken out of play entirely.'],
+    ['Move one step at a time', 'Each round, it bumps the single item a regular is least likely to notice by one rounding step.'],
+    ['Stop at the target', 'It stops as soon as the gap is covered. Nothing rises more than 12%. Out comes a price file.'],
+  ]}
+  decisions={[
+    ['Fewest moves, not a flat rise', 'A 3% rise on everything touches every regular. Fifty cents on the right five items touches almost nobody.'],
+    ['Anchors are sacred by default', 'Guests judge a venue by the prices they know. You can switch the protection off, and see why you should not.'],
+    ['Round like a real menu', 'Prices move in 10c, 50c or $1 steps, because a $24.37 parmi is a tell that something changed.'],
+    ['A hard cap per item', 'No single price rises more than 12%. Past that, the move is a menu redesign, not a reprice.'],
+    ['No model', 'The problem has a right answer. A deterministic search is cheaper, faster and explainable to an owner.'],
+  ]}
+  build={[
+    'Export last month’s product sales from your point of sale: item, price, quantity.',
+    'Mark your anchors. Ask the floor staff which prices guests quote back at them.',
+    'Work out the gap: weekly card revenue times the surcharge you used to add.',
+    'Bump the least-noticed item by one rounding step, repeat until the gap is covered, and cap every item at 12%.',
+    'Load the new prices on a Monday, never a Friday, and watch spend per head for four weeks.',
+  ]}
+  colophon={[
+    ['Engine', 'A greedy search, about forty lines of TypeScript'],
+    ['Data', 'A sample menu of 14 items with invented weekly volumes'],
+    ['Output', 'A CSV price file, generated in your browser'],
+    ['Stack', 'One React island. No server, no model, no tracking'],
+  ]}
+>
+  <Reprice client:visible />
+</PlaygroundPage>

@@ -1,0 +1,51 @@
+---
+import PlaygroundPage from '../../components/PlaygroundPage.astro';
+import Readout from '../../islands/Readout.tsx';
+---
+
+<PlaygroundPage
+  title="Readout"
+  number="03"
+  era="Era 03 — Cobalt"
+  flash="cobalt"
+  sticker="Kept or killed"
+  status="Fixture data"
+  description="A feature is not done when it ships. Readout checks a product bet for a metric, a target, a date and a kill signal, then keeps the ledger."
+  lede="A feature is not done when it ships. It is done when someone says whether it worked. Readout checks your bet before you build it, then keeps the ledger."
+  howto="Start with the vague bet and watch it fail. Load the checkable one. Then write your own."
+  what={{
+    headline: 'Almost nobody checks whether the feature worked.',
+    body: [
+      'A feature is a bet: we spend effort because we believe it will change a behaviour that is worth money. The bet only pays if someone checks, and almost nobody does.',
+      'There are three reasons. The belief was never written in a checkable form. The check date has no owner. And nobody wants to read the answer, because a killed bet feels like a failure.',
+      'Readout attacks the first one here. A bet that can be proven wrong has a shape: a behaviour, a reason, a metric that is not vanity, a target with a baseline, a date, and a kill signal. <a href="/writing/write-down-the-kill-signal/">More on why the kill signal matters</a>.',
+    ],
+  }}
+  how={[
+    ['Write the bet', 'Belief, metric, target, check date and kill signal. Five fields, one screen.'],
+    ['Check the shape', 'Five rules flag vague verbs, vanity metrics, missing baselines, dates nobody owns and kill signals written to be forgotten.'],
+    ['Call it on the date', 'Kept, killed or inconclusive, with one line of why. A person signs it.'],
+    ['Keep the ledger', 'Every call lands in one scoreboard. A killed bet is a win.'],
+  ]}
+  decisions={[
+    ['Rules, not a model, for the check', 'A checkable bet has a checkable shape. Rules are instant, free and explain themselves. A model earns its place later, drafting the verdict.'],
+    ['Vanity metrics fail on sight', 'Page views and sign-ups go up when you shout louder, not when the feature works.'],
+    ['Killed counts as a win', 'The scoreboard celebrates stopped effort. Otherwise nobody writes the readout for a bet that failed.'],
+    ['A person signs every verdict', 'The tool drafts and reminds. It never decides on its own.'],
+  ]}
+  build={[
+    'Make a table: belief, metric, target, check date, kill signal, verdict, why.',
+    'Refuse any row where the target has no number or the date has no owner.',
+    'Put every check date in a real calendar, owned by a real person.',
+    'On the date, write one line: kept, killed or inconclusive, and why.',
+    'Once a quarter, read the ledger out loud. Count the kills as wins.',
+  ]}
+  colophon={[
+    ['Engine', 'Five checks written as regular expressions and plain rules'],
+    ['Ledger', 'Sample bets with invented figures, to show the shape'],
+    ['Stack', 'One React island. Nothing leaves your browser'],
+    ['Origin', 'Round two of my side-project research, September 2026'],
+  ]}
+>
+  <Readout client:visible />
+</PlaygroundPage>

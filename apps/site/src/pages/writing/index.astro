@@ -1,0 +1,132 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+
+// The evergreen canon leads; everything else is newest first.
+const posts = (await getCollection('writing')).sort(
+  (a, b) =>
+    Number(b.data.status === 'Evergreen') - Number(a.data.status === 'Evergreen') ||
+    b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-AU', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const legend = [
+  ['Evergreen', 'Kept up to date. The canon'],
+  ['Published', 'Finished, dated, left as written'],
+  ['Working draft', 'In public on purpose. Will change'],
+];
+---
+
+<Base
+  title="Writing"
+  description="Essays and field notes on what breaks in hospitality software when the room is full: AI that acts, decision records, and building for 8pm."
+  flash="bubblegum"
+  section="writing"
+  image="/cards/writing.png"
+>
+  <section class="wrap intro">
+    <p class="label label-ink">Index 03 — Writing</p>
+    <h1 class="display display-xxl">
+      Writing
+    </h1>
+    <div class="grid sub">
+      <p class="lede">What breaks in hospitality software when the room is full, and how to build it so it does not.</p>
+      <div class="legend">
+        {
+          legend.map(([k, v]) => (
+            <p>
+              <span class="pill">
+                <span class="dot" aria-hidden="true" />
+                {k}
+              </span>
+              <span class="label">{v}</span>
+            </p>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap list">
+    <SectionHead n={String(posts.length).padStart(2, '0')} title="Pieces" aside="The canon first, then newest" />
+    <ol class="posts">
+      {
+        posts.map((p, i) => (
+          <li class="reveal">
+            <a href={`/writing/${p.id}/`} class:list={['post', { feature: i === 0 }]}>
+              <span class="meta">
+                <span class="label label-ink">{p.data.kind}</span>
+                <span class="label">{fmt(p.data.date)}</span>
+                <span class="label">{p.data.minutes} min</span>
+              </span>
+              <span class="display display-m title">{p.data.title}</span>
+              <span class="dek">{p.data.dek}</span>
+              <span class="st">
+                <span class:list={['pill', { 'is-ghost': p.data.status === 'Working draft' }]}>
+                  <span class="dot" aria-hidden="true" />
+                  {p.data.status}
+                </span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="rss label">
+      Subscribe by <a href="/rss.xml">RSS</a>, or follow along on <a href="https://www.linkedin.com/in/nielcody/">LinkedIn</a>.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .intro { padding-top: clamp(28px, 4vw, 48px); }
+  .intro h1 { margin-top: clamp(20px, 3vw, 40px); }
+  .sub { margin-top: 28px; row-gap: 28px; align-items: end; }
+  .sub .lede { grid-column: 1 / span 6; }
+  .legend { grid-column: 8 / span 5; display: grid; gap: 10px; }
+  .legend p { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 12px; }
+  .legend .pill { justify-self: start; }
+  @media (max-width: 900px) {
+    .sub .lede, .legend { grid-column: 1 / -1; }
+  }
+
+  .list { padding-top: clamp(64px, 9vw, 120px); }
+  .posts { list-style: none; padding: 0; }
+  .post {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 160px;
+    grid-template-areas:
+      'meta title st'
+      'meta dek st';
+    column-gap: 28px;
+    row-gap: 10px;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    position: relative;
+  }
+  .meta { grid-area: meta; display: grid; gap: 6px; align-content: start; padding-top: 6px; }
+  .title { grid-area: title; max-width: 22ch; }
+  .dek { grid-area: dek; color: var(--grey); max-width: 56ch; line-height: 1.5; }
+  .st { grid-area: st; justify-self: end; padding-top: 6px; }
+  .post .title {
+    background-image: linear-gradient(var(--bubblegum), var(--bubblegum));
+    background-size: 0% 0.36em;
+    background-position: 0 88%;
+    background-repeat: no-repeat;
+    transition: background-size 420ms var(--ease);
+  }
+  .post:hover .title { background-size: 100% 0.36em; }
+  .feature .title { font-size: clamp(2rem, 4.4vw, 3.8rem); }
+  @media (max-width: 860px) {
+    .post {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'meta' 'title' 'dek' 'st';
+    }
+    .meta { display: flex; gap: 14px; }
+    .st { justify-self: start; }
+  }
+  .rss { margin-top: 36px; }
+  .rss a { color: var(--ink); }
+</style>

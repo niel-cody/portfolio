@@ -1,0 +1,82 @@
+---
+// A kitchen docket from a Friday night. The test every feature has to pass.
+const lines = [
+  ['19:40', 'Table of 12 walks in. No booking.'],
+  ['19:41', 'Kitchen printer jams, mid-docket.'],
+  ['19:44', 'Two staff off sick. Nobody told the roster.'],
+  ['19:47', 'Card terminal drops to offline.'],
+  ['19:52', 'Queue out the door. Manager on the pass.'],
+];
+---
+
+<figure class="docket" aria-label="A Friday night service docket">
+  <div class="paper">
+    <header>
+      <p class="h">** FRIDAY SERVICE **</p>
+      <p>TKT #0840 &nbsp; COVERS 212</p>
+      <p>SERVER: THE ROADMAP</p>
+    </header>
+    <ol>
+      {
+        lines.map(([t, l]) => (
+          <li>
+            <span class="t">{t}</span>
+            <span class="l">{l}</span>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="q">DOES YOUR FEATURE STILL WORK?</p>
+    <p class="opts"><span>[ ] YES</span><span>[ ] NOT FINISHED</span></p>
+    <p class="foot">-- THANK YOU --</p>
+  </div>
+</figure>
+
+<style>
+  .docket {
+    --w: min(100%, 360px);
+    width: var(--w);
+    rotate: 2deg;
+    filter: drop-shadow(0 18px 24px rgb(20 20 20 / 0.12)) drop-shadow(0 2px 3px rgb(20 20 20 / 0.08));
+    transition: rotate 700ms var(--spring);
+  }
+  .docket:hover { rotate: -1deg; }
+  .paper {
+    --tooth: 9px;
+    padding: 26px 24px 34px;
+    background: #fbfaf7;
+    color: #1d1c1a;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    -webkit-mask:
+      conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / var(--tooth) 51% repeat-x,
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / var(--tooth) 51% repeat-x;
+    mask:
+      conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / var(--tooth) 51% repeat-x,
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / var(--tooth) 51% repeat-x;
+  }
+  header {
+    text-align: center;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed currentColor;
+  }
+  .h { font-weight: 500; letter-spacing: 0.12em; }
+  ol { list-style: none; padding: 0; display: grid; gap: 8px; }
+  li { display: grid; grid-template-columns: 52px 1fr; gap: 8px; }
+  .t { font-weight: 500; }
+  .q {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px dashed currentColor;
+    font-weight: 500;
+    font-size: 14px;
+    text-align: center;
+    letter-spacing: 0.06em;
+  }
+  .opts { display: flex; justify-content: space-around; margin-top: 8px; }
+  .foot { margin-top: 18px; text-align: center; opacity: 0.6; }
+</style>

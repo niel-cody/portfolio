@@ -1,0 +1,118 @@
+id: voice-agent-in-service
+title: A voice agent on the till, during service
+short: Let managers 86 items and change prices by voice, mid-service.
+decision: >
+  A point-of-sale company ships an AI assistant that lets a venue manager 86
+  items and change prices by voice during service, without leaving the floor.
+recorded: 2026-09-28
+kind: illustrative
+
+takes:
+  mara:
+    stance: conditional
+    confidence: 63
+    headline: Yes to 86ing. Prices need a name against every change.
+    take: >
+      Marking something off the menu fast is a real problem. The kitchen
+      shouts, I am on the floor, and three more get sold before anyone gets to
+      a screen. Voice fixes that. Prices are different. Across three sites I
+      need to know who changed what and when, and I need to be able to put it
+      back. A voice command with no audit trail is a Monday morning argument.
+    breaks_at: 20:05 — someone says the wrong price in a noisy room and nobody notices until close.
+    would_need: Every price change logged with a name, and undone in one step.
+
+  tomas:
+    stance: conditional
+    confidence: 55
+    headline: I would use it every day. I am scared of the one bad day.
+    take: >
+      I am the manager, the barista and half the kitchen, so anything I can do
+      without putting down a jug is gold. Marking the banana bread sold out by
+      voice, yes please. But I do not trust myself, never mind a computer, to
+      change prices in the middle of a rush. If it gets one wrong, I will not
+      find out until a regular tells me they were overcharged.
+    breaks_at: 8.30am — it hears "flat white, six" as a price change, not an order.
+    would_need: A confirmation read back to me before anything changes.
+
+  priya:
+    stance: pass
+    confidence: 78
+    headline: 86 by voice is the best idea I have heard for the pass in years.
+    take: >
+      When we run out of the fish, every second counts. Right now I tell a
+      server, who tells a manager, who finds a screen. Meanwhile the floor
+      sells four more that I cannot cook. If I can say it at the pass and it
+      is off every menu in seconds, that is covers saved and apologies avoided.
+      Leave prices to the office. Give the kitchen the off switch.
+    breaks_at: It does not break for 86ing. It is how the Friday problem gets solved.
+    would_need: It works with gloves on, over the extraction fan, first time.
+
+  keith:
+    stance: fail
+    confidence: 72
+    headline: A price the guest sees has to be a price someone approved.
+    take: >
+      The price on the menu and the price on the till have to match, and
+      someone has to be accountable for both. A voice command at 9pm, in a
+      loud room, with nobody else hearing it, is the opposite of that.
+      Marking items unavailable is fine and I would welcome it. Changing
+      prices during service, by voice, I would not allow on my floor.
+    breaks_at: 21:00 — a price changes mid-service, the printed menu disagrees, and a member complains.
+    would_need: Price changes kept out of service hours and approved by a second person.
+
+  jess:
+    stance: fail
+    confidence: 67
+    headline: My bar is ninety-five decibels. Voice is a non-starter.
+    take: >
+      I love the idea and I have worked in the room it is for. At midnight on
+      a Saturday you cannot hear the person next to you. Voice recognition
+      will mishear, and in a bar a misheard price becomes a round sold at the
+      wrong price for an hour. Give me a big button on the handheld instead.
+    breaks_at: 23:30 — the music drowns the command, and it guesses.
+    would_need: A tap-to-confirm on the screen, whatever the voice heard.
+
+  sam:
+    stance: conditional
+    confidence: 60
+    headline: Reversible actions, fine. Price changes are a controls question.
+    take: >
+      Across fourteen venues, prices are a control, not a convenience. They
+      affect margin, reporting and, in some places, what we have agreed with
+      suppliers. Anything that changes them needs permissions, a log and a
+      way to undo. Marking items unavailable does not touch any of that, so
+      I would ship that first and hold prices until the controls exist.
+    breaks_at: Month-end — margin is off and nobody can trace which price changed when.
+    would_need: Role-based permissions, a full change log, and prices excluded from the first release.
+
+chair:
+  summaries:
+    pass: >
+      The panel backs the product, with a clear line through it. 86ing by
+      voice solves a real Friday-night problem and is easy to undo. Price
+      changes are backed only with confirmation, a named log and one-step
+      undo, because a wrong price is hard to take back once it has been
+      charged.
+    conditional: >
+      Split the release along reversibility. Ship 86ing by voice now: it is
+      the most-wanted feature on the panel and easy to undo. Hold price
+      changes until they have confirmation, a named change log, permissions
+      and one-step undo, and keep them out of service hours at first.
+    fail: >
+      Not as specified. Bundling 86ing with price changes sinks both. The
+      panel wants the first and rejects the second during service: noise,
+      accountability and matching displayed prices all argue against it.
+      Relaunch as 86ing by voice only, and bring prices back when the
+      controls exist.
+  kill_signals:
+    - Any voice command misheard in more than one in fifty uses in a live trial venue. Stop voice for that action.
+    - One overcharge traced to a voice price change. Pull voice pricing until it has confirmation and undo.
+    - Managers in the trial stop using 86 by voice within three weeks. The friction is higher than it looks.
+  assumptions:
+    - That voice recognition works in a loud venue, first time, without a quiet room.
+    - That managers will trust an agent to change a live menu mid-service.
+    - That an undo exists before it is needed, not after the first mistake.
+  questions:
+    - When you run out of something on a Friday, how many more get sold before the menu changes?
+    - Who is allowed to change a price in your venue today, and how would you know if it changed?
+    - What would you need to hear or see before you trusted a voice command on the till?

@@ -1,0 +1,205 @@
+---
+interface Props {
+  section: string;
+}
+const { section } = Astro.props;
+
+const nav = [
+  { n: '01', label: 'Work', href: '/work/', key: 'work' },
+  { n: '02', label: 'Playground', href: '/playground/', key: 'playground' },
+  { n: '03', label: 'Writing', href: '/writing/', key: 'writing' },
+  { n: '04', label: 'About', href: '/about/', key: 'about' },
+];
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="mark" href="/" aria-label="Niel Cody, home">
+      <span class="led" aria-hidden="true"></span>
+      <span class="word">Niel Cody</span>
+    </a>
+
+    <nav aria-label="Primary">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={section === item.key ? 'page' : undefined}>
+                <span class="n">{item.n}</span>
+                <span class="l">{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <p class="clock label" aria-live="off">
+      <span class="clock-time" data-clock>AU —:—</span>
+      <span class="clock-sep" aria-hidden="true">/</span>
+      <span class="clock-friday" data-friday>Friday 7.40pm</span>
+    </p>
+  </div>
+</header>
+
+<script>
+  // A small readout: local time on the east coast, and the countdown to the
+  // next Friday 7.40pm — the moment every feature is really tested.
+  const tz = 'Australia/Melbourne';
+  const timeEl = document.querySelector<HTMLElement>('[data-clock]');
+  const friEl = document.querySelector<HTMLElement>('[data-friday]');
+
+  function partsIn(date: Date) {
+    const f = new Intl.DateTimeFormat('en-AU', {
+      timeZone: tz, weekday: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
+    });
+    const p = Object.fromEntries(f.formatToParts(date).map((x) => [x.type, x.value]));
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    return { dow: days.indexOf(p.weekday), h: +p.hour, m: +p.minute, s: +p.second };
+  }
+
+  function tick() {
+    const now = new Date();
+    const { dow, h, m, s } = partsIn(now);
+    if (timeEl) timeEl.textContent = `AU ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    if (!friEl) return;
+
+    const secOfWeek = dow * 86400 + h * 3600 + m * 60 + s;
+    const serviceStart = 5 * 86400 + 19 * 3600 + 40 * 60; // Fri 19:40
+    const serviceEnd = 6 * 86400 + 1 * 3600; // Sat 01:00
+    if (secOfWeek >= serviceStart && secOfWeek < serviceEnd) {
+      friEl.innerHTML = '<span class="live-dot"></span>Friday service, live';
+      return;
+    }
+    let delta = serviceStart - secOfWeek;
+    if (delta < 0) delta += 7 * 86400;
+    const d = Math.floor(delta / 86400);
+    const hh = Math.floor((delta % 86400) / 3600);
+    const mm = Math.floor((delta % 3600) / 60);
+    friEl.textContent = `Fri 7.40pm in ${d}d ${String(hh).padStart(2, '0')}h ${String(mm).padStart(2, '0')}m`;
+  }
+  tick();
+  setInterval(tick, 15_000);
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgb(241 239 234 / 0.86);
+    backdrop-filter: saturate(1.2) blur(10px);
+    -webkit-backdrop-filter: saturate(1.2) blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px;
+    height: var(--header-h);
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .led {
+    width: 10px;
+    height: 10px;
+    background: var(--flash);
+    outline: 1px solid var(--ink);
+    transition: rotate 500ms var(--spring);
+  }
+  .mark:hover .led { rotate: 45deg; }
+  .word {
+    font-stretch: 125%;
+    font-weight: 880;
+    font-size: 17px;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  nav { justify-self: center; }
+  nav ul {
+    display: flex;
+    gap: clamp(14px, 2.6vw, 40px);
+    list-style: none;
+    padding: 0;
+  }
+  nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    padding: 8px 0;
+    text-decoration: none;
+    font-size: 14.5px;
+    font-weight: 520;
+    letter-spacing: -0.005em;
+  }
+  nav .n {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--grey);
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    height: 1px;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--mid) var(--ease);
+  }
+  nav a:hover::after { transform: scaleX(1); }
+  nav a[aria-current='page']::after { transform: scaleX(1); height: 2px; }
+  nav a[aria-current='page'] .n { color: var(--ink); }
+
+  .clock {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 10.5px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .clock-time { color: var(--ink); }
+  .clock-sep { opacity: 0.4; }
+  .clock :global(.live-dot) {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: var(--flash);
+    outline: 1px solid var(--ink);
+    animation: blink 1.6s steps(1) infinite;
+  }
+
+  @media (max-width: 1080px) {
+    .clock-sep, .clock-friday { display: none; }
+  }
+  @media (max-width: 720px) {
+    .bar {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: 52px 40px;
+      height: auto;
+      row-gap: 0;
+    }
+    nav {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-self: stretch;
+      border-top: 1px solid var(--rule);
+    }
+    nav ul { justify-content: space-between; gap: 0; }
+    nav a { font-size: 13.5px; padding: 10px 0; }
+    nav .n { display: none; }
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+title: An agent that writes to a live till
+kicker: AI, from a trade-show demo to production
+summary: A two-person side project built for a trade show became a production AI capability with its own squad. In its first month of tracking, 199 customer organisations used it. It now takes actions inside a live point of sale, not just answers questions.
+period: 2025 — now
+seat: Product Manager, AI capabilities
+team: Started as one engineer and me. Now a squad with a tech lead, engineers, a product owner and QA
+status: In production
+order: 0
+headline:
+  value: '199'
+  label: Customer organisations in the first tracked month
+spec:
+  - ['What it does', 'Answers, reports and charts. Now also acts: charges, discounts, availability, menu mapping']
+  - ['Users', '199 organisations, 292 users, 788 sessions in 33 days']
+  - ['Growth', 'Weekly active organisations from 25 to a peak of 115']
+  - ['Beta', 'Building its own knowledge base from the codebase, for in-app troubleshooting']
+  - ['Hard part', 'Guardrails, permissions, reversibility and evaluation']
+---
+
+import WeeklyChart from '../../components/WeeklyChart.astro';
+
+## The situation
+
+It started as a side project. One engineer and I built a conversational agent for a trade show, to show venue operators what their own data could say if it could talk. It was a demo, and it was meant to be.
+
+Twelve months later it is a platform capability with its own squad, running in production across the group's point-of-sale products.
+
+## What it does
+
+It interrogates venue data, reports on performance and charts the results. It is built to explain the numbers the way a good manager would, not to return rows like a bot.
+
+Then it crossed a line most assistants never cross. **It takes actions.** It creates service charges and discounts, manages product availability, and maps imported menu items to products in seconds. In beta, it builds its own knowledge base from our repositories, so operators can troubleshoot inside the app instead of leaving it.
+
+## The decision that mattered
+
+An agent that writes to a live till is a different risk profile from one that chats. A wrong answer costs a moment of trust. A wrong action costs a venue money in the middle of service.
+
+So most of the work stopped being about the model and became about the system around it: guardrails, permissions, reversibility and evaluation. The principle underneath it: **the more reversible an action, the more autonomy it gets. The less reversible, the more a human stays in the loop.**
+
+## Four calls from the decision log
+
+Every call on this product is written down with what was decided, why, and the evidence that settled it. Four of them, in plain terms:
+
+| Decision | Why |
+|---|---|
+| **Resolve identity with a deterministic lookup, not the model** | Order, transaction and payment IDs all look the same. Identity has one right answer, so a probabilistic path only adds ways to fail. When we traced failed queries, the biggest causes were not model problems at all |
+| **Teach it the back office before giving it deeper actions** | A large share of real questions were "how do I", not "what were my sales". An agent that cannot answer those should not be trusted with more power yet |
+| **Deliver analytics through the agent, not bespoke dashboards** | It scales down to a single venue with no consultant attached. Dashboards built per use case serve big groups and leave everyone else out |
+| **Single-venue AI first** | The fastest feedback loop, on a venue's own data, is what proves value and earns the resourcing. Multi-venue benchmarking gets smaller bets. Selling data to suppliers stays exploratory |
+
+## What happened
+
+I commissioned the usage telemetry in August 2026. In the first 33 days of tracking:
+
+<WeeklyChart />
+
+- **199** distinct customer organisations and **292** users, across **788** sessions.
+- Weekly active organisations grew from **25 to a peak of 115**, about 4.6 times in three weeks.
+
+## What I cannot claim, yet
+
+- **The week after the peak fell back,** to 88 organisations. One month of data is an adoption curve, not a steady state.
+- **Organisations, not venues.** A group customer can hold many venues. The venue count is higher and unknown, so I do not quote one.
+- **Support deflection.** There is no ticket baseline joined to the telemetry, so there is no honest deflection number. That is the next thing to measure.
+
+## What it taught me
+
+The demo was the easy part. The product was everything that makes a demo safe to leave running on a Friday night.
